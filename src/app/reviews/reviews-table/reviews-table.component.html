@@ -1,0 +1,30 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Artwork</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Artist</th>
+      <th scope="col">Album</th>
+      <th scope="col">Date Listened</th>
+      <th scope="col">Year Released</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let review of reviews | slice: (page - 1) * pageSize : (page - 1) * pageSize + pageSize">
+      <td><img src="{{ review.artwork}}" alt="{{ review.artist}}: {{review.album}}" /></td>
+      <td>{{ review.rating | starReview }}</td>
+      <td>{{ review.artist }}</td>
+      <td>{{ review.album }}</td>
+      <td>{{ review.dateListened | date:'yyyy/MM/dd' }}</td>
+      <td>{{ review.yearReleased }}</td>
+      <td>
+        <div class="btn-group">
+          <button class="btn-primary" ngbButton (click)="handleEdit.emit(review)">Edit</button>
+          <button class="btn-danger" ngbButton (click)="handleDelete.emit(review)">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ngb-pagination [collectionSize]="reviews.length" [(page)]="page"></ngb-pagination>
