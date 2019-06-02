@@ -1,0 +1,85 @@
+<form
+  [formGroup]="form"
+  (submit)="submit()"
+>
+  <div class="form-group">
+    <label for="artist">Artist</label>
+    <input
+      type="text"
+      class="form-control"
+      id="artist"
+      name="artist"
+      placeholder="Artist Name"
+      formControlName="artist"
+      required
+      [class.is-invalid]="!form.value.artist.isValid"
+    />
+  </div>
+  <div class="form-group">
+    <label for="album">Album</label>
+    <input
+      type="text"
+      class="form-control"
+      id="album"
+      name="album"
+      placeholder="Album Name"
+      formControlName="album"
+      required
+      [class.is-invalid]="!form.value.album.isValid"
+    />
+  </div>
+  <div class="form-group">
+    <label for="spotifyId">Spotify ID</label>
+    <input
+      type="text"
+      class="form-control"
+      id="spotifyId"
+      name="spotifyId"
+      placeholder="Spotify ID"
+      formControlName="spotifyId"
+      required
+      [class.is-invalid]="!form.value.spotifyId.isValid"
+    />
+  </div>
+  <div class="form-group">
+    <label for="spotifyId">Artwork URL</label>
+    <input
+      type="url"
+      class="form-control"
+      id="artwork"
+      name="artwork"
+      placeholder="Artwork URL"
+      formControlName="artwork"
+    />
+  </div>
+  <div class="form-group">
+    <label for="dateListened">Date Listened</label>
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        id="dateListened"
+        name="dateListened"
+        ngbDatepicker
+        placeholder="yyyy-mm-dd"
+        #d="ngbDatepicker"
+        formControlName="dateListened"
+        required
+        [class.is-invalid]="!form.value.dateListened.isValid"
+      />
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary"
+          (click)="d.toggle()"
+          type="button">
+          <span class="oi oi-calendar"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="rating">Rating</label>&nbsp;<ngb-rating formControlName="rating" [class.is-invalid]="!form.value.rating.isValid"></ngb-rating> | {{ form.value.rating }}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
