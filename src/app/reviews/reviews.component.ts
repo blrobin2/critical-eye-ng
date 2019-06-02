@@ -8,7 +8,7 @@ import { Review } from '../review';
   styleUrls: ['./reviews.component.css']
 })
 export class ReviewsComponent implements OnInit {
-  albums: Review[] = [{
+  reviews: Review[] = [{
     id: '1',
     artist: 'Vampire Weekend',
     album: 'Father of the Bride',
@@ -35,4 +35,12 @@ export class ReviewsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
+
+  editReview(review: Review) {
+    console.log(review);
+  }
+
+  deleteReview(review: Review) {
+    console.log('delete', review);
+  }
 }

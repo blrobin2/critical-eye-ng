@@ -1,18 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { StarReviewPipe } from './star-review.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ReviewsComponent
+    ReviewsComponent,
+    StarReviewPipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
