@@ -8,5 +8,5 @@ export interface Review {
     description: string;
     href: string;
     rating: number;
-    yearReleased: number;
+    yearReleased: string;
 }

@@ -11,21 +11,23 @@ export class ReviewFormComponent implements OnInit {
   @Input() review: Review;
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = formBuilder.group({
-      artist: ['', Validators.required],
-      album: ['', Validators.required],
-      spotifyId: ['', Validators.required],
-      artwork: [''],
-      dateListened: ['', Validators.required],
-      description: [''],
-      href: [''],
-      rating: ['', Validators.required],
-      yearReleased: ['']
-    });
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      artist: [this.review.artist, Validators.required],
+      album: [this.review.album, Validators.required],
+      spotifyId: [this.review.spotifyId, Validators.required],
+      artwork: [this.review.artwork],
+      dateListened: [
+        this.review.dateListened.toISOString().substring(0, 10),
+        Validators.required
+      ],
+      description: [this.review.description],
+      href: [this.review.href],
+      rating: [this.review.rating, Validators.required],
+      yearReleased: [this.review.yearReleased]
+    });
   }
 
   submit() {

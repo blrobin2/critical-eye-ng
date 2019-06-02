@@ -4,8 +4,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
 import { ReviewFormComponent } from './reviews/review-form/review-form.component';
 
 const routes: Routes = [
-  { path: '', component: ReviewsComponent },
-  { path: 'new', component: ReviewFormComponent }
+  { path: '', component: ReviewsComponent }
 ];
 
 @NgModule({

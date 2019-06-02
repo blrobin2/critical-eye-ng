@@ -17,8 +17,8 @@ export class ReviewsComponent implements OnInit {
     dateListened: new Date('2019-05-17T19:10'),
     description: '',
     href: 'https://open.spotify.com/album/1A3nVEWRJ8yvlPzawHI1pQ',
-    rating: 4.5,
-    yearReleased: 2019
+    rating: 9,
+    yearReleased: '2019'
   }, {
     album: 'there is no Other (with Francesco Turrisi)',
     artist: 'Rhiannon Giddens',
@@ -27,14 +27,36 @@ export class ReviewsComponent implements OnInit {
     description: '',
     href: 'https://open.spotify.com/album/1NC1JxgjI6JFc3YR9JstXb',
     id: '2',
-    rating: 4,
+    rating: 8,
     spotifyId: '1NC1JxgjI6JFc3YR9JstXb',
-    yearReleased: 2019
+    yearReleased: '2019'
   }];
 
-  constructor() { }
+  selectedReview: Review = this.reviews[0]; // this.emptyReview;
+
+  constructor() {
+  }
 
   ngOnInit() {}
+
+  get emptyReview() {
+    return {
+      album: '',
+      artist: '',
+      artwork: '',
+      dateListened: new Date(),
+      description: '',
+      id: '',
+      rating: 5,
+      spotifyId: '',
+      yearReleased: '',
+      href: ''
+    };
+  }
+
+  clearReview() {
+    this.selectedReview = this.emptyReview;
+  }
 
   editReview(review: Review) {
     console.log(review);

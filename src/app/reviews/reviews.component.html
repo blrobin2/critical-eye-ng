@@ -1,9 +1,12 @@
 <div class="row">
-  <div class="col">
+  <div class="col-8">
     <app-reviews-table
       [reviews]=reviews
       (handleEdit)="editReview($event)"
       (handleDelete)="deleteReview($event)"
     ></app-reviews-table>
+  </div>
+  <div class="col-4">
+    <app-review-form [review]="selectedReview"></app-review-form>
   </div>
 </div>
