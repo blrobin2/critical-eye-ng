@@ -12,7 +12,8 @@
       placeholder="Artist Name"
       formControlName="artist"
       required
-      [class.is-invalid]="!form.value.artist.isValid"
+      [class.is-invalid]="form.get('artist').invalid"
+      [class.is-valid]="!form.get('artist').invalid"
     />
   </div>
   <div class="form-group">
@@ -25,7 +26,8 @@
       placeholder="Album Name"
       formControlName="album"
       required
-      [class.is-invalid]="!form.value.album.isValid"
+      [class.is-invalid]="form.get('album').invalid"
+      [class.is-valid]="!form.get('album').invalid"
     />
   </div>
   <div class="form-group">
@@ -38,7 +40,8 @@
       placeholder="Spotify ID"
       formControlName="spotifyId"
       required
-      [class.is-invalid]="!form.value.spotifyId.isValid"
+      [class.is-invalid]="form.get('spotifyId').invalid"
+      [class.is-valid]="!form.get('spotifyId').invalid"
     />
   </div>
   <div class="form-group">
@@ -50,6 +53,28 @@
       name="artwork"
       placeholder="Artwork URL"
       formControlName="artwork"
+    />
+  </div>
+  <div class="form-group">
+    <label for="href">Streaming URL</label>
+    <input
+      type="url"
+      class="form-control"
+      id="href"
+      name="href"
+      placeholder="Where to stream album"
+      formControlName="href"
+    />
+  </div>
+  <div class="form-group">
+    <label for="yearReleased">Year Released</label>
+    <input
+      type="text"
+      class="form-control"
+      id="yearReleased"
+      name="yearReleased"
+      placeholder="Year Released"
+      formControlName="yearReleased"
     />
   </div>
   <div class="form-group">
@@ -65,7 +90,8 @@
         #d="ngbDatepicker"
         formControlName="dateListened"
         required
-        [class.is-invalid]="!form.value.dateListened.isValid"
+        [class.is-invalid]="form.get('dateListened').invalid"
+        [class.is-valid]="!form.get('dateListened').invalid"
       />
       <div class="input-group-append">
         <button
@@ -78,8 +104,27 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="rating">Rating</label>&nbsp;<ngb-rating formControlName="rating" [class.is-invalid]="!form.value.rating.isValid"></ngb-rating> | {{ form.value.rating }}
+    <label for="rating">Rating</label>
+    &nbsp;
+    <ngb-rating formControlName="rating">
+    </ngb-rating>
+    <span *ngIf="form.value.rating"> | {{ form.value.rating }}</span>
   </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <div class="form-group">
+    <label for="description">Review Details</label>
+    <textarea
+      class="form-control"
+      id="description"
+      name="description"
+      formControlName="description"
+      rows="3">
+    </textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="!form.valid"
+  >Submit</button>
 </form>
