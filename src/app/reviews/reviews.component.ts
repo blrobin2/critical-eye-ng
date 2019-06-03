@@ -54,10 +54,6 @@ export class ReviewsComponent implements OnInit {
     this.reviewService.sortDirection = direction;
   }
 
-  editReview(review: Review) {
-    console.log(review);
-  }
-
   deleteReview(review: Review) {
     console.log('delete', review);
   }

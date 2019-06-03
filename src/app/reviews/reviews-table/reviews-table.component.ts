@@ -9,13 +9,13 @@ import { Observable } from 'rxjs';
   styleUrls: ['./reviews-table.component.css']
 })
 export class ReviewsTableComponent {
-  @Input() reviews$: Observable<Review[]>;
-  @Input() total$: Observable<number>;
+  @Input() reviews: Review[];
+  @Input() total: number;
+  @Input() loading: boolean;
   @Input() selectedReview: Review;
   @Input() searchTerm: string;
   @Input() pageSize: number;
   @Input() page: number;
-  @Input() loading$: Observable<boolean>;
 
   @Output() handleSearch = new EventEmitter();
   @Output() handleSelect: EventEmitter<Review> = new EventEmitter();

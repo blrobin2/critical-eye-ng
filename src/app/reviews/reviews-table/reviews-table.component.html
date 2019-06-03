@@ -1,7 +1,7 @@
 <form>
   <div class="form-group form-inline">
     Search: <input type="text" class="form-control ml-2" name="searchTerm" (input)="handleSearch.emit($event)">
-    <span class="ml-3" *ngIf="loading$ | async">Loading &hellip;</span>
+    <span class="ml-3" *ngIf="loading">Loading &hellip;</span>
   </div>
 
   <table class="table table-striped">
@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let review of reviews$ | async">
+      <tr *ngFor="let review of reviews">
         <td>
           <input type="checkbox" [checked]="selectedReview.id === review.id" (change)="handleSelect.emit(review)">
         </td>
@@ -49,16 +49,19 @@
           </ngb-highlight>
         </td>
         <td>
-          <div class="btn-group">
-            <button class="btn-danger" ngbButton (click)="handleDelete.emit(review)">&times;</button>
-          </div>
+            <button
+              class="btn btn-danger"
+              ngbButton
+              (click)="handleDelete.emit(review)">
+              &times;
+            </button>
         </td>
       </tr>
     </tbody>
   </table>
   <div class="d-flex justify-content-between p-2">
     <ngb-pagination
-      [collectionSize]="total$ | async"
+      [collectionSize]="total"
       [(page)]="page"
       [pageSize]="pageSize">
     </ngb-pagination>
