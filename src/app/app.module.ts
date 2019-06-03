@@ -9,6 +9,7 @@ import { StarReviewPipe } from './star-review.pipe';
 import { ReviewFormComponent } from './reviews/review-form/review-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewsTableComponent } from './reviews/reviews-table/reviews-table.component';
+import { SortableDirective } from './sortable.directive';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ReviewsTableComponent } from './reviews/reviews-table/reviews-table.com
     ReviewsComponent,
     StarReviewPipe,
     ReviewFormComponent,
-    ReviewsTableComponent
+    ReviewsTableComponent,
+    SortableDirective
   ],
   imports: [
     BrowserModule,

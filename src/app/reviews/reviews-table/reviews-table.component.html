@@ -1,30 +1,78 @@
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Artwork</th>
-      <th scope="col">Rating</th>
-      <th scope="col">Artist</th>
-      <th scope="col">Album</th>
-      <th scope="col">Date Listened</th>
-      <th scope="col">Year Released</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let review of reviews | slice: (page - 1) * pageSize : (page - 1) * pageSize + pageSize">
-      <td><img src="{{ review.artwork}}" alt="{{ review.artist}}: {{review.album}}" /></td>
-      <td>{{ review.rating | starReview }}</td>
-      <td>{{ review.artist }}</td>
-      <td>{{ review.album }}</td>
-      <td>{{ review.dateListened | date:'yyyy/MM/dd' }}</td>
-      <td>{{ review.yearReleased }}</td>
-      <td>
-        <div class="btn-group">
-          <button class="btn-primary" ngbButton (click)="handleEdit.emit(review)">Edit</button>
-          <button class="btn-danger" ngbButton (click)="handleDelete.emit(review)">Delete</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<ngb-pagination [collectionSize]="reviews.length" [(page)]="page"></ngb-pagination>
+<form>
+  <div class="form-group form-inline">
+    Search: <input type="text" class="form-control ml-2" name="searchTerm" [(ngModel)]="reviewService.searchTerm">
+    <span class="ml-3" *ngIf="reviewService.loading$ | async">Loading &hellip;</span>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Artwork</th>
+        <th scope="col" appSortable="rating" (sort)="onSort($event)">Rating</th>
+        <th scope="col" appSortable="artist" (sort)="onSort($event)">Artist</th>
+        <th scope="col" appSortable="album" (sort)="onSort($event)">Album</th>
+        <th scope="col" appSortable="dateListened" (sort)="onSort($event)">Date Listened</th>
+        <th scope="col" appSortable="yearReleased" (sort)="onSort($event)">Year Released</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let review of reviews$ | async">
+        <td>
+          <input type="checkbox" [checked]="selectedReview.id === review.id" (change)="setSelectedReview(review)">
+        </td>
+        <td><img src="{{ review.artwork}}" alt="{{ review.artist}}: {{review.album}}" /></td>
+        <td>{{ review.rating | starReview }}</td>
+        <td>
+          <ngb-highlight
+            [result]="review.artist"
+            [term]="reviewService.searchTerm">
+          </ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight
+            [result]="review.album"
+            [term]="reviewService.searchTerm">
+          </ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight
+            [result]="review.dateListened | date:'yyyy/MM/dd'"
+            [term]="reviewService.searchTerm">
+          </ngb-highlight>
+        </td>
+        <td>
+          <ngb-highlight
+            [result]="review.yearReleased"
+            [term]="reviewService.searchTerm">
+          </ngb-highlight>
+        </td>
+        <td>
+          <div class="btn-group">
+            <button class="btn-primary" ngbButton (click)="handleEdit.emit(review)">Edit</button>
+            <button class="btn-danger" ngbButton (click)="handleDelete.emit(review)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="total$ | async"
+      [(page)]="reviewService.page"
+      [pageSize]="reviewService.pageSize">
+    </ngb-pagination>
+
+    <select
+      name="pageSize"
+      id="pageSize"
+      [(ngModel)]="reviewService.pageSize"
+      class="custom-select"
+      style="width: auto">
+      <option [ngValue]="2">2 items per page</option>
+      <option [ngValue]="5">5 items per page</option>
+      <option [ngValue]="10">10 items per page</option>
+    </select>
+  </div>
+</form>

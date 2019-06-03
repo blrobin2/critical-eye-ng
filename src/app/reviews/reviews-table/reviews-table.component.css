@@ -1,0 +1,16 @@
+th[appSortable] {
+  cursor: pointer;
+}
+
+th[appSortable].asc:before, th[appSortable].desc:before {
+    display: block;
+    float: left;
+}
+
+th[appSortable].asc:before {
+  content: '↑';
+}
+
+th[appSortable].desc:before {
+  content: '↓';
+}
