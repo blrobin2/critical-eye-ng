@@ -49,12 +49,15 @@ export class ReviewsComponent implements OnInit {
     };
   }
 
-  openReviewModal(content: TemplateRef<any>) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(result => {
-      console.log('result', result);
-    }).catch(err => {
-      console.log(err);
-    });
+  openReviewModal(content: TemplateRef<string>) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result
+      .then(result => {
+        console.log('result', result);
+      }).catch(err => {
+        console.log(err);
+      });
   }
 
   saveReview(review: Partial<Review>, modal: NgbActiveModal) {

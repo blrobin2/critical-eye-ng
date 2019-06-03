@@ -176,7 +176,7 @@ export class AlbumSearchService {
         type: 'album',
         uri: 'spotify:album:1M4anG49aEs4YimBdj96Oy'
       },
-      {
+            {
         album_type: 'album',
         artists: [
           {
