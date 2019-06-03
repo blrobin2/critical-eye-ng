@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Review } from 'src/app/review';
 
@@ -7,13 +7,14 @@ import { Review } from 'src/app/review';
   templateUrl: './review-form.component.html',
   styleUrls: ['./review-form.component.css']
 })
-export class ReviewFormComponent implements OnInit {
+export class ReviewFormComponent implements OnChanges {
   @Input() review: Review;
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {
+  }
 
-  ngOnInit() {
+  ngOnChanges() {
     this.form = this.formBuilder.group({
       artist: [this.review.artist, Validators.required],
       album: [this.review.album, Validators.required],

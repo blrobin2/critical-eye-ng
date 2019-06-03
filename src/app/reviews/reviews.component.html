@@ -1,11 +1,21 @@
 <div class="row">
   <div class="col-8">
     <app-reviews-table
+      [reviews$]="reviews$"
+      [total$]="total$"
+      [loading$]="reviewService.loading$"
+      [searchTerm]="reviewService.searchTerm"
+      [pageSize]="reviewService.pageSize"
+      [page]="reviewService.page"
+      [selectedReview]="selectedReview"
+      (handleSearch)="searchReviews($event.target.value)"
+      (handleSelect)="selectReview($event)"
       (handleEdit)="editReview($event)"
       (handleDelete)="deleteReview($event)"
+      (handleSort)="sortReviews($event)"
     ></app-reviews-table>
   </div>
   <div class="col-4">
-    <!-- <app-review-form></app-review-form> -->
+    <app-review-form [review]="selectedReview"></app-review-form>
   </div>
 </div>
