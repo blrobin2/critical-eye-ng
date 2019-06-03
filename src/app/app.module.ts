@@ -10,6 +10,7 @@ import { ReviewFormComponent } from './reviews/review-form/review-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewsTableComponent } from './reviews/reviews-table/reviews-table.component';
 import { SortableDirective } from './sortable.directive';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SortableDirective } from './sortable.directive';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule

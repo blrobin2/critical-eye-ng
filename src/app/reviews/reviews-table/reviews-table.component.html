@@ -1,6 +1,12 @@
 <form>
   <div class="form-group form-inline">
-    Search: <input type="text" class="form-control ml-2" name="searchTerm" (input)="handleSearch.emit($event)">
+    Search:
+    &nbsp;
+    <input
+      type="text"
+      class="form-control ml-2"
+      name="searchTerm"
+      (input)="handleSearch.emit($event)">
     <span class="ml-3" *ngIf="loading">Loading &hellip;</span>
   </div>
 
@@ -20,9 +26,16 @@
     <tbody>
       <tr *ngFor="let review of reviews">
         <td>
-          <input type="checkbox" [checked]="selectedReview.id === review.id" (change)="handleSelect.emit(review)">
+          <input
+            type="checkbox"
+            [checked]="selectedReview.id === review.id"
+            (change)="handleSelect.emit(review)">
         </td>
-        <td><img src="{{ review.artwork }}" alt="{{ review.artist }}: {{ review.album }}" /></td>
+        <td>
+          <img
+            src="{{ review.artwork }}"
+            alt="{{ review.artist }}: {{ review.album }}" />
+        </td>
         <td>{{ review.rating | starReview }}</td>
         <td>
           <ngb-highlight
@@ -52,7 +65,8 @@
             <button
               class="btn btn-danger"
               ngbButton
-              (click)="handleDelete.emit(review)">
+              (click)="handleDelete.emit(review)"
+              aria-label="Delete Review">
               &times;
             </button>
         </td>

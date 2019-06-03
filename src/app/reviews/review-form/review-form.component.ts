@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Review } from 'src/app/review';
 
@@ -9,6 +9,7 @@ import { Review } from 'src/app/review';
 })
 export class ReviewFormComponent implements OnChanges {
   @Input() review: Review;
+  @Output() handleSubmit = new EventEmitter();
   form: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
@@ -16,6 +17,7 @@ export class ReviewFormComponent implements OnChanges {
 
   ngOnChanges() {
     this.form = this.formBuilder.group({
+      id: [this.review.id],
       artist: [this.review.artist, Validators.required],
       album: [this.review.album, Validators.required],
       spotifyId: [this.review.spotifyId, Validators.required],
@@ -33,10 +35,9 @@ export class ReviewFormComponent implements OnChanges {
 
   submit() {
     if (this.form.valid) {
-      console.log(this.form.value);
+      this.handleSubmit.emit(this.form.value);
     } else {
       console.error('Fill out form');
     }
-
   }
 }
