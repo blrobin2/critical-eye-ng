@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewsTableComponent } from './reviews/reviews-table/reviews-table.component';
 import { SortableDirective } from './sortable.directive';
 import { HttpClientModule } from '@angular/common/http';
+import { AlbumSearchComponent } from './reviews/album-search/album-search.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     StarReviewPipe,
     ReviewFormComponent,
     ReviewsTableComponent,
-    SortableDirective
+    SortableDirective,
+    AlbumSearchComponent
   ],
   imports: [
     BrowserModule,

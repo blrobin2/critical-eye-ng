@@ -12,40 +12,15 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class="form form-inline" (submit)="searchTerm$.next($event.target.q.value)">
-            <div class="form-group">
-              <label for="q">Search for Album</label>
-              <input type="text" name="q" id="q" class="form-control">
-            </div>
-            <button class="btn btn-primary">Search</button>
-          </form>
-          <hr>
-          <div *ngIf="searchResults">
-            <div class="row">
-              <div *ngFor="let result of searchResults" class="col">
-                <div class="card">
-                  <img
-                    class="card-img-top"
-                    src="{{ result.artwork }}"
-                    alt="{{ result.artist }} - {{ result.album}} album cover" />
-                  <div class="card-body">
-                    <h5 class="card-title">{{ result.album }}</h5>
-                    <p class="card-text">
-                      by {{ result.artist }}
-                    </p>
-                    <div class="btn-group">
-                      <a class="btn btn-success" target="_blank" href="{{ result.href }}">Listen</a>
-                      <button class="btn btn-primary" (click)="populateReviewForm(result)">Review</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-          <app-review-form [review]="selectedReview" (handleSubmit)="saveReview($event, modal)"></app-review-form>
+          <app-album-search
+            [searchTerm$]="searchTerm$"
+            [searchResults]="searchResults"
+            (handleReviewButton)="populateReviewForm($event)"
+          ></app-album-search>
+          <app-review-form
+            [review]="selectedReview"
+            (handleSubmit)="saveReview($event, modal)">
+          </app-review-form>
         </div>
       </ng-template>
 
