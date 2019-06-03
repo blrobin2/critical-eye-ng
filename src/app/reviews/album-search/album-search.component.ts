@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { AlbumSearchResult } from 'src/app/album-search.service';
 
 @Component({
@@ -7,14 +7,8 @@ import { AlbumSearchResult } from 'src/app/album-search.service';
   templateUrl: './album-search.component.html',
   styleUrls: ['./album-search.component.css']
 })
-export class AlbumSearchComponent implements OnInit {
-  @Input() searchTerm$: Observable<string>;
+export class AlbumSearchComponent {
+  @Input() searchTerm$: Subject<string>;
   @Input() searchResults: AlbumSearchResult[];
   @Output() handleReviewButton: EventEmitter<AlbumSearchResult> = new EventEmitter();
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

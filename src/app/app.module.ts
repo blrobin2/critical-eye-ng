@@ -12,6 +12,7 @@ import { ReviewsTableComponent } from './reviews/reviews-table/reviews-table.com
 import { SortableDirective } from './sortable.directive';
 import { HttpClientModule } from '@angular/common/http';
 import { AlbumSearchComponent } from './reviews/album-search/album-search.component';
+import { ReviewFormModalComponent } from './reviews/review-form-modal/review-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AlbumSearchComponent } from './reviews/album-search/album-search.compon
     ReviewFormComponent,
     ReviewsTableComponent,
     SortableDirective,
-    AlbumSearchComponent
+    AlbumSearchComponent,
+    ReviewFormModalComponent
   ],
   imports: [
     BrowserModule,

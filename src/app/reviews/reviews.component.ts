@@ -1,9 +1,8 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Review } from '../review';
 import { Observable, Subject } from 'rxjs';
 import { ReviewService } from '../review.service';
 import { SortEvent } from '../sortable.directive';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlbumSearchService, AlbumSearchResult } from '../album-search.service';
 
 @Component({
@@ -21,7 +20,6 @@ export class ReviewsComponent implements OnInit {
 
   constructor(
     public reviewService: ReviewService,
-    private modalService: NgbModal,
     private albumSearchService: AlbumSearchService
   ) {
     this.reviews$ = reviewService.reviews$;
@@ -49,19 +47,7 @@ export class ReviewsComponent implements OnInit {
     };
   }
 
-  openReviewModal(content: TemplateRef<string>) {
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result
-      .then(result => {
-        console.log('result', result);
-      }).catch(err => {
-        console.log(err);
-      });
-  }
-
-  saveReview(review: Partial<Review>, modal: NgbActiveModal) {
-    modal.close('Saved');
+  saveReview(review: Partial<Review>) {
     console.log(review);
     this.selectedReview = this.emptyReview;
   }
