@@ -78,7 +78,6 @@ const authenticate = db => async (req, res, next) => {
     const data = await db.collection('users').findOne({
       _id: new ObjectID(user.id)
     });
-
     if (! data) throw new Error();
 
     req.user = data;

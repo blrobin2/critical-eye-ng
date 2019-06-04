@@ -17,12 +17,10 @@ const getMany = (db) => async (req, res) => {
 const getOne = (db) => async (req, res) => {
     try {
       const reviews = db.collection('reviews');
-      const [data] = await reviews.find({
+      const data = await reviews.findOne({
         createdBy: new ObjectID(req.user._id),
         _id: new ObjectID(req.params.id)
-      })
-      .limit(1)
-      .toArray();
+      });
 
       if (! data) {
         return res.status(404).end();
