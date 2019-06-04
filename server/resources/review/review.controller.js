@@ -4,7 +4,7 @@ const getMany = (db) => async (req, res) => {
   try {
     const reviews = db.collection('reviews');
     const data = await reviews.find({
-      // createdBy: req.user._id
+      createdBy: new ObjectID(req.user._id)
     }).toArray();
 
     res.status(200).json({ data });
@@ -18,7 +18,7 @@ const getOne = (db) => async (req, res) => {
     try {
       const reviews = db.collection('reviews');
       const [data] = await reviews.find({
-        //createdBy: req.user._id,
+        createdBy: new ObjectID(req.user._id),
         _id: new ObjectID(req.params.id)
       })
       .limit(1)
@@ -36,7 +36,10 @@ const getOne = (db) => async (req, res) => {
 
 const createOne = db => async (req, res) => {
   try {
-    const doc = { ...req.body, dateListened: new Date(req.body.dateListened) };
+    const doc = {
+      ...req.body, dateListened: new Date(req.body.dateListened),
+      createdBy: new ObjectID(req.user._id)
+    };
     const data = await db.collection('reviews').insertOne(doc);
     res.status(201).json({ data: data.ops[0] });
   } catch (e) {
@@ -46,12 +49,16 @@ const createOne = db => async (req, res) => {
 
 const updateOne = db => async (req, res) => {
   try {
-    const doc = req.body;
+    const doc = {
+      ...req.body,
+      createdBy: new ObjectID(req.user._id)
+    };
     if (doc.dateListened) {
       doc.dateListened = new Date(doc.dateListened);
     }
     const { value: data } = await db.collection('reviews').findOneAndUpdate({
       _id: new ObjectID(req.params.id),
+      createdBy: doc.createdBy
     }, {
       $set: doc
     }, {
@@ -71,7 +78,8 @@ const updateOne = db => async (req, res) => {
 const removeOne = db => async (req, res) => {
   try {
     const { value: data } = await db.collection('reviews').findOneAndDelete({
-      _id: new ObjectID(req.params.id)
+      _id: new ObjectID(req.params.id),
+      createdBy: new ObjectID(req.user._id)
     });
 
     if (! data) {

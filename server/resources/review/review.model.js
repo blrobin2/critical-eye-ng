@@ -1,9 +1,9 @@
-module.exports = db => {
-  db.createCollection('reviews', {
+module.exports = async db => {
+  await db.createCollection('reviews', {
     validator: {
       $jsonSchema: {
         bsonType: 'object',
-        required: ['artist', 'album', 'spotifyId', 'dateListened', 'rating'],
+        required: ['artist', 'album', 'spotifyId', 'dateListened', 'rating', 'createdBy'],
         properties: {
           artist: {
             bsonType: 'string',
@@ -43,9 +43,20 @@ module.exports = db => {
             bsonType: 'int',
             minimum: 1900,
             description: 'must be an integer of at least 1900 and is required'
+          },
+          createdBy: {
+            bsonType: 'ObjectID',
+            description: 'the ID of the person who wrote the review'
           }
         }
       }
     }
+  });
+
+  await db.collection('reviews').createIndex({
+    createdBy: 1,
+    spotifyId: 1
+  }, {
+    unique: true
   });
 };
