@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { Review } from 'src/app/review';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AlbumSearchResult } from 'src/app/album-search.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-review-form-modal',
@@ -9,8 +11,8 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ReviewFormModalComponent implements OnInit {
   @Input() review: Review;
-  @Input() searchTerm$;
-  @Input() searchResults;
+  @Input() searchTerm$: Subject<string>;
+  @Input() searchResults: AlbumSearchResult[];
 
   @Output() handleFormSave = new EventEmitter();
   @Output() handleReviewButton = new EventEmitter();

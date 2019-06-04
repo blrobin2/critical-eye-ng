@@ -4,7 +4,11 @@
       <h2 *ngIf="review.id">Edit Review</h2>
       <h2 *ngIf="!review.id">Write Review</h2>
     </h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>

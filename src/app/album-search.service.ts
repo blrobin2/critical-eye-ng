@@ -29,7 +29,7 @@ export class AlbumSearchService {
       );
   }
 
-  searchEntries(term) {
+  searchEntries(term: string) {
     // return this.http.get(this.baseUrl + this.queryUrl + term);
     return of([
       {
@@ -231,7 +231,8 @@ export class AlbumSearchService {
           artist: album.artists.map(artist => artist.name).join(','),
           album: album.name,
           href: album.external_urls.spotify,
-          artwork: album.images[0].url
+          artwork: album.images[0].url,
+          yearReleased: new Date(album.release_date).getUTCFullYear(),
         }));
       }
     ));

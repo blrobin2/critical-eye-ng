@@ -33,7 +33,7 @@ function sort(reviews: Review[], column: string, direction: SortDirection): Revi
   });
 }
 
-function matches(review: Review, term: string) {
+function matches(review: Review, term: string): boolean {
   return Object.values(review)
     .some(val =>
       String(val).toLowerCase().includes(term.toLowerCase()));
