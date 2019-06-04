@@ -13,8 +13,8 @@ const router = controllers => {
   router
     .route('/:id')
     .get(controllers.getOne)
-    //.put(controllers.updateeOne)
-    //.delete(controllers.removeOne)
+    .put(controllers.updateOne)
+    .delete(controllers.removeOne);
 
   return router;
 };

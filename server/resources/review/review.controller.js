@@ -35,7 +35,6 @@ const getOne = (db) => async (req, res) => {
 };
 
 const createOne = db => async (req, res) => {
-
   try {
     const doc = { ...req.body, dateListened: new Date(req.body.dateListened) };
     const data = await db.collection('reviews').insertOne(doc);
@@ -43,10 +42,52 @@ const createOne = db => async (req, res) => {
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
-}
+};
+
+const updateOne = db => async (req, res) => {
+  try {
+    const doc = req.body;
+    if (doc.dateListened) {
+      doc.dateListened = new Date(doc.dateListened);
+    }
+    const { value: data } = await db.collection('reviews').findOneAndUpdate({
+      _id: new ObjectID(req.params.id),
+    }, {
+      $set: doc
+    }, {
+      returnOriginal: false
+    });
+
+    if (!data) {
+      return res.status(404).end();
+    }
+
+    res.status(200).json({ data: data });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
+
+const removeOne = db => async (req, res) => {
+  try {
+    const { value: data } = await db.collection('reviews').findOneAndDelete({
+      _id: new ObjectID(req.params.id)
+    });
+
+    if (! data) {
+      return res.status(404).end();
+    }
+
+    res.status(200).json({ data });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
 
 module.exports = db => ({
   getMany: getMany(db),
   getOne: getOne(db),
-  createOne: createOne(db)
+  createOne: createOne(db),
+  updateOne: updateOne(db),
+  removeOne: removeOne(db)
 });
