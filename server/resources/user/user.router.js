@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { ObjectID } = require('../../utils/db');
 
 const newToken = (user, expiration) => {
-  console.log('user', user)
   return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: expiration
   });
@@ -21,26 +20,10 @@ const verifyToken = token =>
 const router = (db, spotifyApi) => {
   const router = Router();
 
-  router.get('/login', async (_, res) => {
-    res.redirect(spotifyApi.createAuthorizeURL(
-      ['user-read-email', 'user-read-private'],
-      process.env.JWT_SECRET));
-  });
-
   router.get('/spotify/callback/', async (req, res) => {
-    if (req.query.error) {
-      return res.status(500).json({ error: req.query.error });
-    }
-
-    if (!req.query.code) {
-      return res.redirect('/auth/login');
-    }
-
     try {
-      const data = await spotifyApi.authorizationCodeGrant(req.query.code);
-      spotifyApi.setAccessToken(data.body['access_token']);
-      spotifyApi.setRefreshToken(data.body['refresh_token']);
-
+      const data = req.query;
+      spotifyApi.setAccessToken(data.access_token);
       const profile = await spotifyApi.getMe();
       const { value: user } = await db.collection('users').findOneAndUpdate({
           spotifyId: profile.body.id
@@ -54,15 +37,11 @@ const router = (db, spotifyApi) => {
           returnOriginal: false
         });
 
-      const token = newToken(user, data.body['expires_in']);
+      const token = newToken(user, data.expires_in * 1000);
       return res.status(201).send({ token });
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
-  });
-
-  router.get('/logout', (req) => {
-    req.logout();
   });
 
   return router;
@@ -72,6 +51,7 @@ const authenticate = db => async (req, res, next) => {
   try {
     const { authorization } = req.headers;
     const [, token] = authorization.split('Bearer ');
+
     const user = await verifyToken(token);
     if (!user) throw new Error();
 
