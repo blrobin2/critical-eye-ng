@@ -90,6 +90,12 @@ export class ReviewService {
     }
   }
 
+  deleteReview(review: Review) {
+    return this.http.delete(`${this.apiUrl}/${review._id}`).subscribe(() => {
+      this._search$.next();
+    });
+  }
+
   get reviews$() {
     return this._reviews$.asObservable();
   }

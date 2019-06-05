@@ -99,7 +99,11 @@ export class ReviewsComponent implements OnInit {
   }
 
   deleteReview(review: Review) {
-    // TODO: HOOK UP TO SERVICE
+    this.reviewService.deleteReview(review).add(() => {
+      if (this.selectedReview._id === review._id) {
+        this.selectedReview = this.emptyReview;
+      }
+    });
   }
 
   populateReviewForm(searchResult: AlbumSearchResult) {
