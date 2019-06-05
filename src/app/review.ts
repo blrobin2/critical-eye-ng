@@ -1,5 +1,5 @@
 export interface Review {
-    id: string;
+    _id: string;
     artist: string;
     album: string;
     spotifyId: string;

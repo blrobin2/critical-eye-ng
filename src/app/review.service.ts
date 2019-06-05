@@ -5,6 +5,8 @@ import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 
 import { SortDirection } from './sortable.directive';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 interface SearchResult {
   reviews: Review[];
@@ -56,7 +58,10 @@ export class ReviewService {
     sortDirection: ''
   };
 
-  constructor() {
+  constructor(private http: HttpClient) {
+  }
+
+  start() {
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -69,6 +74,7 @@ export class ReviewService {
     });
 
     this._search$.next();
+    return this;
   }
 
   get reviews$() {
@@ -124,12 +130,19 @@ export class ReviewService {
       searchTerm
     } = this.state;
 
-    const reviews = sort(REVIEWS, sortColumn, sortDirection)
-      .filter(review => matches(review, searchTerm));
-    return of({
-      reviews: reviews.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize),
-      total: reviews.length
-    });
+    return this.http.get(`${environment.apiEndpoint}/api/review`).pipe(
+      switchMap(({ data }: { data: Review[] }) => {
+        const reviews = sort(data, sortColumn, sortDirection)
+        .filter(review => matches(review, searchTerm))
+        .map(review => {
+          review.dateListened = new Date(review.dateListened);
+          return review;
+        });
+        return of({
+          reviews: reviews.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize),
+          total: reviews.length
+        });
+      }));
   }
 
   private set(patch: Partial<State>) {

@@ -1,8 +1,8 @@
 <ng-template #reviewFormModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">
-      <h2 *ngIf="review.id">Edit Review</h2>
-      <h2 *ngIf="!review.id">Write Review</h2>
+      <h2 *ngIf="review._id">Edit Review</h2>
+      <h2 *ngIf="!review._id">Write Review</h2>
     </h4>
     <button
       type="button"
@@ -27,6 +27,6 @@
 </ng-template>
 
 <button class="btn btn-primary" (click)="openReviewModal(reviewFormModal)">
-  <span *ngIf="review.id">Edit Selected Review</span>
-  <span *ngIf="!review.id">Write New Review</span>
+  <span *ngIf="review._id">Edit Selected Review</span>
+  <span *ngIf="!review._id">Write New Review</span>
 </button>

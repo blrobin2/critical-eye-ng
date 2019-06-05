@@ -10,9 +10,10 @@ import { ReviewFormComponent } from './reviews/review-form/review-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewsTableComponent } from './reviews/reviews-table/reviews-table.component';
 import { SortableDirective } from './sortable.directive';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AlbumSearchComponent } from './reviews/album-search/album-search.component';
 import { ReviewFormModalComponent } from './reviews/review-form-modal/review-form-modal.component';
+import { AuthInterceptor } from './http-interceptors/AuthInterceptor';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,11 @@ import { ReviewFormModalComponent } from './reviews/review-form-modal/review-for
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

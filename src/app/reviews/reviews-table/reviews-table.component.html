@@ -28,7 +28,7 @@
         <td>
           <input
             type="checkbox"
-            [checked]="selectedReview.id === review.id"
+            [checked]="selectedReview._id === review._id"
             (change)="handleSelect.emit(review)">
         </td>
         <td>

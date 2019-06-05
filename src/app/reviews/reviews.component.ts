@@ -4,6 +4,8 @@ import { Observable, Subject } from 'rxjs';
 import { ReviewService } from '../review.service';
 import { SortEvent } from '../sortable.directive';
 import { AlbumSearchService, AlbumSearchResult } from '../album-search.service';
+import { AuthService } from '../auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reviews',
@@ -15,22 +17,39 @@ export class ReviewsComponent implements OnInit {
   total$: Observable<number>;
   searchTerm$ = new Subject<string>();
   searchResults: AlbumSearchResult[];
-
   selectedReview: Review = this.emptyReview;
 
   constructor(
     public reviewService: ReviewService,
-    private albumSearchService: AlbumSearchService
+    private albumSearchService: AlbumSearchService,
+    public authService: AuthService,
+    private route: ActivatedRoute
   ) {
-    this.reviews$ = reviewService.reviews$;
-    this.total$ = reviewService.total$;
+  }
+
+  ngOnInit() {
+    if (this.authService.getToken()) {
+      this.startItUp();
+    } else {
+      this.route.fragment.subscribe(fragment => {
+        if (fragment) {
+          this.authService.spotifyCallback(fragment).then(() => {
+            this.startItUp();
+          });
+        }
+      });
+    }
+  }
+
+  private startItUp() {
+    this.reviewService.start();
+    this.reviews$ = this.reviewService.reviews$;
+    this.total$ = this.reviewService.total$;
     this.albumSearchService.search(this.searchTerm$)
       .subscribe(searchResults => {
         this.searchResults = searchResults;
       });
   }
-
-  ngOnInit() {}
 
   get emptyReview() {
     return {
@@ -39,7 +58,7 @@ export class ReviewsComponent implements OnInit {
       artwork: '',
       dateListened: new Date(),
       description: '',
-      id: '',
+      _id: '',
       rating: 5,
       spotifyId: '',
       yearReleased: '',
@@ -47,8 +66,11 @@ export class ReviewsComponent implements OnInit {
     };
   }
 
+  handleLogin() {
+    this.authService.login();
+  }
+
   saveReview(review: Partial<Review>) {
-    console.log(review);
     this.selectedReview = this.emptyReview;
   }
 
@@ -57,8 +79,9 @@ export class ReviewsComponent implements OnInit {
   }
 
   selectReview(review: Review) {
+    console.log(review);
     // Deselect if selecting twice
-    if (this.selectedReview.id === review.id) {
+    if (this.selectedReview._id === review._id) {
       this.selectedReview = this.emptyReview;
     } else {
       this.selectedReview = review;
