@@ -28,20 +28,24 @@ export class ReviewsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.handleAuth();
+  }
+
+  private handleAuth() {
     if (this.authService.getToken()) {
-      this.startItUp();
+      this.startServices();
     } else {
       this.route.fragment.subscribe(fragment => {
         if (fragment) {
           this.authService.spotifyCallback(fragment).then(() => {
-            this.startItUp();
+            this.startServices();
           });
         }
       });
     }
   }
 
-  private startItUp() {
+  private startServices() {
     this.reviewService.start();
     this.reviews$ = this.reviewService.reviews$;
     this.total$ = this.reviewService.total$;
@@ -70,8 +74,10 @@ export class ReviewsComponent implements OnInit {
     this.authService.login();
   }
 
-  saveReview(review: Partial<Review>) {
-    this.selectedReview = this.emptyReview;
+  saveReview(review: Review) {
+    this.reviewService.saveReview(review).add(() => {
+      this.selectedReview = this.emptyReview;
+    });
   }
 
   searchReviews(term: string = '') {
@@ -93,7 +99,7 @@ export class ReviewsComponent implements OnInit {
   }
 
   deleteReview(review: Review) {
-    console.log('delete', review);
+    // TODO: HOOK UP TO SERVICE
   }
 
   populateReviewForm(searchResult: AlbumSearchResult) {

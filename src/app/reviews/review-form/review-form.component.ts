@@ -17,7 +17,7 @@ export class ReviewFormComponent implements OnChanges {
 
   ngOnChanges() {
     this.form = this.formBuilder.group({
-      id: [this.review._id],
+      _id: [this.review._id],
       artist: [this.review.artist, Validators.required],
       album: [this.review.album, Validators.required],
       spotifyId: [this.review.spotifyId, Validators.required],
@@ -26,7 +26,7 @@ export class ReviewFormComponent implements OnChanges {
         this.review.dateListened.toISOString().substring(0, 10),
         Validators.required
       ],
-      description: [this.review.description],
+      description: [this.review.description || ''],
       href: [this.review.href],
       rating: [this.review.rating, Validators.required],
       yearReleased: [this.review.yearReleased]

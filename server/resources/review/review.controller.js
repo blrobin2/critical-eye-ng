@@ -35,10 +35,11 @@ const getOne = (db) => async (req, res) => {
 const createOne = db => async (req, res) => {
   try {
     const doc = {
-      ...req.body, dateListened: new Date(req.body.dateListened),
+      ...req.body,
       createdBy: new ObjectID(req.user._id)
     };
-    const data = await db.collection('reviews').insertOne(doc);
+    const cleaned = cleanRequestData(doc);
+    const data = await db.collection('reviews').insertOne(cleaned);
     res.status(201).json({ data: data.ops[0] });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -51,14 +52,14 @@ const updateOne = db => async (req, res) => {
       ...req.body,
       createdBy: new ObjectID(req.user._id)
     };
-    if (doc.dateListened) {
-      doc.dateListened = new Date(doc.dateListened);
-    }
+
+    const cleaned = cleanRequestData(doc);
+
     const { value: data } = await db.collection('reviews').findOneAndUpdate({
       _id: new ObjectID(req.params.id),
-      createdBy: doc.createdBy
+      createdBy: cleaned.createdBy
     }, {
-      $set: doc
+        $set: cleaned
     }, {
       returnOriginal: false
     });
@@ -72,6 +73,22 @@ const updateOne = db => async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
+const cleanRequestData = (doc) => {
+  // We don't want to overwrite the existing _id
+  delete doc._id;
+  for (let key in doc) {
+    if (key === 'dateListened') {
+      doc.dateListened = new Date(doc.dateListened);
+    }
+    // Remove empty values so it doesn't freak out Mongo's validation
+    if (!doc[key]) {
+      delete doc[key];
+    }
+  }
+
+  return doc;
+}
 
 const removeOne = db => async (req, res) => {
   try {

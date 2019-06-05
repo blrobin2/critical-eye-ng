@@ -33,6 +33,7 @@
         </td>
         <td>
           <img
+            *ngIf="review.artwork"
             src="{{ review.artwork }}"
             alt="{{ review.artist }}: {{ review.album }}" />
         </td>

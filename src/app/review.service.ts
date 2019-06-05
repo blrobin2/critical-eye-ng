@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Review } from './review';
-import { REVIEWS } from './reviews';
 import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 
@@ -50,6 +49,8 @@ export class ReviewService {
   private _reviews$ = new BehaviorSubject<Review[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
+  private apiUrl = `${environment.apiEndpoint}/api/review`;
+
   private state: State = {
     page: 1,
     pageSize: 10,
@@ -75,6 +76,18 @@ export class ReviewService {
 
     this._search$.next();
     return this;
+  }
+
+  saveReview(review: Review) {
+    if (review._id === '') {
+      return this.http.post(this.apiUrl, review).subscribe(() => {
+        this._search$.next();
+      });
+    } else {
+      return this.http.put(`${this.apiUrl}/${review._id}`, review).subscribe(() => {
+        this._search$.next();
+      });
+    }
   }
 
   get reviews$() {
@@ -130,7 +143,7 @@ export class ReviewService {
       searchTerm
     } = this.state;
 
-    return this.http.get(`${environment.apiEndpoint}/api/review`).pipe(
+    return this.http.get(this.apiUrl).pipe(
       switchMap(({ data }: { data: Review[] }) => {
         const reviews = sort(data, sortColumn, sortDirection)
         .filter(review => matches(review, searchTerm))
