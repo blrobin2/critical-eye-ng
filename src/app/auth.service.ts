@@ -43,4 +43,9 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('token');
   }
+
+  logout() {
+    localStorage.removeItem('token');
+    location.reload();
+  }
 }

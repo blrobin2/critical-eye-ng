@@ -79,7 +79,6 @@ export class ReviewsComponent implements OnInit {
   }
 
   selectReview(review: Review) {
-    console.log(review);
     // Deselect if selecting twice
     if (this.selectedReview._id === review._id) {
       this.selectedReview = this.emptyReview;
