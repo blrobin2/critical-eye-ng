@@ -32,12 +32,16 @@ export class ReviewsComponent implements OnInit {
   }
 
   private handleAuth() {
+    // If we have the token, we can just begin
     if (this.authService.getToken()) {
       this.startServices();
     } else {
-      this.route.fragment.subscribe(fragment => {
-        if (fragment) {
-          this.authService.spotifyCallback(fragment).then(() => {
+      // If we have a fragment, we got it from spotify authenticating us
+      // so we pass it on to our backend in order to get a token
+      // And THEN we can start services
+      this.route.queryParams.subscribe(params => {
+        if (params.code) {
+          this.authService.spotifyCallback(params.code).then(() => {
             this.startServices();
           });
         }
@@ -104,6 +108,14 @@ export class ReviewsComponent implements OnInit {
         this.selectedReview = this.emptyReview;
       }
     });
+  }
+
+  changePageSize(size) {
+    this.reviewService.pageSize = parseInt(size, 10);
+  }
+
+  changePage(page) {
+    this.reviewService.page = parseInt(page, 10);
   }
 
   populateReviewForm(searchResult: AlbumSearchResult) {

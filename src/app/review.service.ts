@@ -157,6 +157,7 @@ export class ReviewService {
           review.dateListened = new Date(review.dateListened);
           return review;
         });
+
         return of({
           reviews: reviews.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize),
           total: reviews.length

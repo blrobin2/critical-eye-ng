@@ -14,7 +14,12 @@
         (handleReviewButton)="populateReviewForm($event)"
         (handleFormSave)="saveReview($event)">
       </app-review-form-modal>
-      <button type="button" class="btn btn-info" (click)="authService.logout()">Refresh Login</button>
+      <button
+        type="button"
+        class="btn btn-info"
+        (click)="authService.logout()">
+        Log Out
+      </button>
     </div>
   </div>
 </div>
@@ -32,6 +37,8 @@
       (handleSelect)="selectReview($event)"
       (handleDelete)="deleteReview($event)"
       (handleSort)="sortReviews($event)"
+      (handlePageSize)="changePageSize($event)"
+      (handlePage)="changePage($event)"
     ></app-reviews-table>
   </div>
 </div>

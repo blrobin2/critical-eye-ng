@@ -20,6 +20,8 @@ export class ReviewsTableComponent {
   @Output() handleSelect: EventEmitter<Review> = new EventEmitter();
   @Output() handleDelete: EventEmitter<Review> = new EventEmitter();
   @Output() handleSort: EventEmitter<SortEvent> = new EventEmitter();
+  @Output() handlePageSize = new EventEmitter();
+  @Output() handlePage = new EventEmitter();
 
   @ViewChildren(SortableDirective) headers: QueryList<SortableDirective>;
 

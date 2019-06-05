@@ -14,3 +14,7 @@ th[appSortable].asc:before {
 th[appSortable].desc:before {
   content: '↓';
 }
+
+.album-cover {
+  max-width: 70px;
+}

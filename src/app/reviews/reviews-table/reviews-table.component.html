@@ -34,6 +34,7 @@
         <td>
           <img
             *ngIf="review.artwork"
+            class="album-cover"
             src="{{ review.artwork }}"
             alt="{{ review.artist }}: {{ review.album }}" />
         </td>
@@ -77,19 +78,20 @@
   <div class="d-flex justify-content-between p-2">
     <ngb-pagination
       [collectionSize]="total"
-      [(page)]="page"
+      (pageChange)="handlePage.emit($event)"
       [pageSize]="pageSize">
     </ngb-pagination>
 
     <select
       name="pageSize"
       id="pageSize"
-      [(ngModel)]="pageSize"
+      (change)="handlePageSize.emit($event.target.value)"
       class="custom-select"
-      style="width: auto">
-      <option [ngValue]="2">2 items per page</option>
-      <option [ngValue]="5">5 items per page</option>
-      <option [ngValue]="10">10 items per page</option>
+      style="width: auto"
+      [value]="pageSize">
+      <option value="2">2 items per page</option>
+      <option value="5">5 items per page</option>
+      <option value="10">10 items per page</option>
     </select>
   </div>
 </form>

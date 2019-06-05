@@ -11,6 +11,7 @@ const userModel = require('./resources/user/user.model');
 const { getAuthRouter, authenticate } = require('./resources/user/user.router');
 const reviewModel = require('./resources/review/review.model');
 const { getReviewRouter } = require('./resources/review/review.router');
+const { getSearchRouter } = require('./resources/search/search.router');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
@@ -35,6 +36,7 @@ const setUpRoutes = (db, spotifyApi) => {
   app.use(authenticate(db));
 
   app.use('/api/review', getReviewRouter(db));
+  app.use('/api/search', getSearchRouter(spotifyApi));
 };
 
 const start = async () => {
@@ -46,7 +48,7 @@ const start = async () => {
     const spotifyApi = new SpotifyWebApi({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      redirectUri: `${process.env.HOST_URL}/auth/spotify/callback/`,
+      redirectUri: 'http://localhost:4200',
     });
     const db = client.db(process.env.MONGO_DB);
     setUpSchemas(db);

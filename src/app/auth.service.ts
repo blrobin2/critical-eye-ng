@@ -6,14 +6,12 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  popup;
-
   constructor(private http: HttpClient) { }
 
   login() {
     const options = {
       client_id: '11057fc682c64532bb8541e9c5574f88',
-      response_type: 'token',
+      response_type: 'code',
       redirect_uri: 'http://localhost:4200',
       scope: ['user-read-email', 'user-read-private'].join(' '),
       show_dialog: 'true'
@@ -25,10 +23,10 @@ export class AuthService {
     window.location.replace(`https://accounts.spotify.com/authorize?${params.toString()}`);
   }
 
-  spotifyCallback(fragment) {
+  spotifyCallback(code) {
     return new Promise((resolve) => {
       this.http
-        .get(`${environment.apiEndpoint}/auth/spotify/callback?${fragment}`)
+        .get(`${environment.apiEndpoint}/auth/spotify/callback?code=${code}`)
         .subscribe(({ token }: { token: string}) => {
           this.setToken(token);
           resolve();
@@ -36,7 +34,7 @@ export class AuthService {
     });
   }
 
-  setToken(token) {
+  setToken(token: string) {
     localStorage.setItem('token', token);
   }
 
