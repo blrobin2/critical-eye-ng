@@ -44,7 +44,6 @@ const router = (db, spotifyApi) => {
       const token = newToken(user, tokens.body.expires_in * 1000);
       return res.status(201).send({ token });
     } catch (e) {
-      console.log(e);
       return res.status(500).json({ error: e.message });
     }
   });

@@ -110,11 +110,11 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  changePageSize(size) {
+  changePageSize(size: string) {
     this.reviewService.pageSize = parseInt(size, 10);
   }
 
-  changePage(page) {
+  changePage(page: string) {
     this.reviewService.page = parseInt(page, 10);
   }
 

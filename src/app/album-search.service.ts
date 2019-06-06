@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { environment } from '../environments/environment';
+import { buildQueryString } from './utils';
 
 export interface AlbumSearchResult {
   spotifyId: string;
@@ -17,7 +18,6 @@ export interface AlbumSearchResult {
 })
 export class AlbumSearchService {
   baseUrl = `${environment.apiEndpoint}/api/search`;
-  queryUrl = '?q=';
 
   constructor(private http: HttpClient) { }
 
@@ -29,10 +29,9 @@ export class AlbumSearchService {
   }
 
   searchEntries(term: string) {
-    return this.http.get(this.baseUrl + this.queryUrl + term)
+    return this.http.get(this.baseUrl + buildQueryString({ q: term }))
       .pipe(
         map((response: { data: { items: any[] } }) => {
-          console.log(response.data.items);
           return response.data.items
             // Grab only the data we care about
             .map(album => ({

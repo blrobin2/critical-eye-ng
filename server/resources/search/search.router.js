@@ -6,13 +6,11 @@ const router = spotifyApi => {
   router.get('/', async (req, res) => {
     try {
       const q = req.query.q;
-      console.log(q);
       const data = await spotifyApi.refreshAccessToken();
       spotifyApi.setAccessToken(data.body.access_token);
       const { body: { albums } } = await spotifyApi.searchAlbums(q);
       res.status(200).json({ data: albums });
     } catch (e) {
-      console.log(e);
       res.sendStatus(500, e.message);
     }
   });

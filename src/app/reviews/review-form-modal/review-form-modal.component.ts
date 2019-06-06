@@ -20,14 +20,7 @@ export class ReviewFormModalComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   openReviewModal(content: TemplateRef<string>) {
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result
-      .then(result => {
-        console.log('result', result);
-      }).catch(err => {
-        console.log(err);
-      });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   ngOnInit() {

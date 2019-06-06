@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: 'http://localhost:8080'
+  apiEndpoint: 'http://localhost:8080',
+  spotifyClientId: '11057fc682c64532bb8541e9c5574f88'
 };
 
 /*

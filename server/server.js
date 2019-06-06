@@ -48,7 +48,7 @@ const start = async () => {
     const spotifyApi = new SpotifyWebApi({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      redirectUri: 'http://localhost:4200',
+      redirectUri: process.env.CLIENT_URL,
     });
     const db = client.db(process.env.MONGO_DB);
     setUpSchemas(db);

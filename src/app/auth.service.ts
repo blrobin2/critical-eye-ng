@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { buildQueryString } from './utils';
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +10,17 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login() {
-    const options = {
-      client_id: '11057fc682c64532bb8541e9c5574f88',
+    const params = buildQueryString({
+      client_id: environment.spotifyClientId,
       response_type: 'code',
-      redirect_uri: 'http://localhost:4200',
+      redirect_uri: window.location.origin,
       scope: ['user-read-email', 'user-read-private'].join(' '),
       show_dialog: 'true'
-    };
-    const params = new URLSearchParams();
-    Object.entries(options).forEach(([key, value]) => {
-      params.set(key, value);
     });
-    window.location.replace(`https://accounts.spotify.com/authorize?${params.toString()}`);
+    window.location.replace(`https://accounts.spotify.com/authorize${params}`);
   }
 
-  spotifyCallback(code) {
+  spotifyCallback(code: string) {
     return new Promise((resolve) => {
       this.http
         .get(`${environment.apiEndpoint}/auth/spotify/callback?code=${code}`)
