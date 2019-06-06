@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Review } from '../review';
+import { Review } from './review';
 import { Observable, Subject } from 'rxjs';
-import { ReviewService } from '../review.service';
-import { SortEvent } from '../sortable.directive';
-import { AlbumSearchService, AlbumSearchResult } from '../album-search.service';
-import { AuthService } from '../auth.service';
+import { ReviewService } from './review.service';
+import { SortEvent } from '../core/sortable.directive';
+import { AlbumSearchService, AlbumSearchResult } from '../core/album-search/album-search.service';
+import { AuthService } from '../core/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { AlertService } from '../core/alert/alert.service';
 
 @Component({
   selector: 'app-reviews',
@@ -23,7 +24,8 @@ export class ReviewsComponent implements OnInit {
     public reviewService: ReviewService,
     private albumSearchService: AlbumSearchService,
     public authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {
   }
 
@@ -42,6 +44,10 @@ export class ReviewsComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         if (params.code) {
           this.authService.spotifyCallback(params.code).then(() => {
+            this.alertService.addAlert({
+              type: 'success',
+              message: 'Successfully logged in!'
+            });
             this.startServices();
           });
         }
@@ -103,11 +109,17 @@ export class ReviewsComponent implements OnInit {
   }
 
   deleteReview(review: Review) {
-    this.reviewService.deleteReview(review).add(() => {
-      if (this.selectedReview._id === review._id) {
-        this.selectedReview = this.emptyReview;
-      }
-    });
+    if (confirm(`Are you sure you wish to delete your review for ${review.artist} - ${review.album}?`)) {
+      this.reviewService.deleteReview(review).add(() => {
+        this.alertService.addAlert({
+          type: 'info',
+          message: 'Review deleted'
+        });
+        if (this.selectedReview._id === review._id) {
+          this.selectedReview = this.emptyReview;
+        }
+      });
+    }
   }
 
   changePageSize(size: string) {

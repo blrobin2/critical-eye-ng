@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { environment } from '../environments/environment';
-import { buildQueryString } from './utils';
+import { environment } from '../../../environments/environment';
+import { buildQueryString } from '../../utils';
 
 export interface AlbumSearchResult {
   spotifyId: string;

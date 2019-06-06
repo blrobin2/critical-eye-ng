@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
-import { environment } from '../environments/environment';
-import { buildQueryString } from './utils';
+import { environment } from '../../../environments/environment';
+import { buildQueryString } from '../../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +41,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    location.reload();
+    window.location.href = '/';
   }
 }

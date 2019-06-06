@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpEvent,
   HttpInterceptor,
   HttpHandler,
-  HttpRequest,
-  HttpHeaders
+  HttpRequest
 } from '@angular/common/http';
-import { AuthService } from '../auth.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'

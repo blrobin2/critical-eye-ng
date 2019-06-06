@@ -3,9 +3,9 @@ import { Review } from './review';
 import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 
-import { SortDirection } from './sortable.directive';
+import { SortDirection } from '../core/sortable.directive';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 interface SearchResult {
   reviews: Review[];

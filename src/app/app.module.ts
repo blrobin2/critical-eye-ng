@@ -5,15 +5,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReviewsComponent } from './reviews/reviews.component';
-import { StarReviewPipe } from './star-review.pipe';
+import { StarReviewPipe } from './core/star-review.pipe';
 import { ReviewFormComponent } from './reviews/review-form/review-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReviewsTableComponent } from './reviews/reviews-table/reviews-table.component';
-import { SortableDirective } from './sortable.directive';
+import { SortableDirective } from './core/sortable.directive';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AlbumSearchComponent } from './reviews/album-search/album-search.component';
+import { AlbumSearchComponent } from './core/album-search/album-search.component';
 import { ReviewFormModalComponent } from './reviews/review-form-modal/review-form-modal.component';
-import { AuthInterceptor } from './http-interceptors/AuthInterceptor';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { AlertComponent } from './core/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AuthInterceptor } from './http-interceptors/AuthInterceptor';
     ReviewsTableComponent,
     SortableDirective,
     AlbumSearchComponent,
-    ReviewFormModalComponent
+    ReviewFormModalComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

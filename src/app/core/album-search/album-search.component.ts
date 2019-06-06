@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { AlbumSearchResult } from 'src/app/album-search.service';
+import { Subject } from 'rxjs';
+import { AlbumSearchResult } from './album-search.service';
 
 @Component({
   selector: 'app-album-search',

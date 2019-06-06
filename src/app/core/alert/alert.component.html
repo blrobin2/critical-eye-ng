@@ -1,0 +1,14 @@
+<p *ngFor="let alert of alerts">
+  <ngb-alert [type]="alert.type" (close)="close(alert)">
+    {{ alert.message }}
+  </ngb-alert>
+</p>
+<p>
+  <button
+    *ngIf="alerts.length > 1"
+    type="button"
+    class="btn btn-success"
+    (click)="reset()">
+    Clear All
+  </button>
+</p>

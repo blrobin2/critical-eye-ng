@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
-import { Review } from 'src/app/review';
+import { Review } from 'src/app/reviews/review';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AlbumSearchResult } from 'src/app/album-search.service';
+import { AlbumSearchResult } from 'src/app/core/album-search/album-search.service';
 import { Subject } from 'rxjs';
 
 @Component({

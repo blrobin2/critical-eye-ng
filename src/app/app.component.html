@@ -1,4 +1,9 @@
 <h1>Critical Eye</h1>
 <div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <app-alert [alerts]="alertService.alerts"></app-alert>
+    </div>
+  </div>
   <router-outlet></router-outlet>
 </div>

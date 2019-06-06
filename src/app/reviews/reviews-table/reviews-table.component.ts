@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
-import { Review } from 'src/app/review';
-import { SortableDirective, SortEvent } from 'src/app/sortable.directive';
+import { Review } from '../review';
+import { SortableDirective, SortEvent } from 'src/app/core/sortable.directive';
 
 @Component({
   selector: 'app-reviews-table',

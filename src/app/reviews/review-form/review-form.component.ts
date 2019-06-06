@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Review } from 'src/app/review';
+import { Review } from '../review';
+import { AlertService } from 'src/app/core/alert/alert.service';
 
 @Component({
   selector: 'app-review-form',
@@ -12,8 +13,10 @@ export class ReviewFormComponent implements OnChanges {
   @Output() handleSubmit = new EventEmitter();
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private alertService: AlertService
+    ) {}
 
   ngOnChanges() {
     this.form = this.formBuilder.group({
@@ -37,7 +40,10 @@ export class ReviewFormComponent implements OnChanges {
     if (this.form.valid) {
       this.handleSubmit.emit(this.form.value);
     } else {
-      console.error('Fill out form');
+      this.alertService.addAlert({
+        type: 'danger',
+        message: 'Fill out the form dude'
+      });
     }
   }
 }
