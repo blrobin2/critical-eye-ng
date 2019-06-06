@@ -38,7 +38,7 @@ export class AlbumSearchService {
               spotifyId: album.id,
               artist: album.artists
                 .map((artist: { name: string }) => artist.name)
-                .join(','),
+                .join(', '),
               album: album.name,
               href: album.external_urls.spotify,
               artwork: album.images[0].url,

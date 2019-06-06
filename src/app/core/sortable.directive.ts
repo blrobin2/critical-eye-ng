@@ -1,4 +1,11 @@
-import { Directive, Input, HostBinding, HostListener, Output, EventEmitter } from '@angular/core';
+import {
+  Directive,
+  Input,
+  HostBinding,
+  HostListener,
+  Output,
+  EventEmitter
+} from '@angular/core';
 
 export type SortDirection = 'asc' | 'desc' | '';
 const rotate: {[key: string]: SortDirection} = {

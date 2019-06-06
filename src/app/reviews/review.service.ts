@@ -153,10 +153,10 @@ export class ReviewService {
       switchMap(({ data }: { data: Review[] }) => {
         const reviews = sort(data, sortColumn, sortDirection)
         .filter(review => matches(review, searchTerm))
-        .map(review => {
-          review.dateListened = new Date(review.dateListened);
-          return review;
-        });
+        .map(review => ({
+          ...review,
+          dateListened: new Date(review.dateListened)
+        }));
 
         return of({
           reviews: reviews.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize),

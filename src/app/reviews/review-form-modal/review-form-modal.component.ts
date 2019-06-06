@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  TemplateRef,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { Review } from 'src/app/reviews/review';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlbumSearchResult } from 'src/app/core/album-search/album-search.service';
@@ -26,7 +33,7 @@ export class ReviewFormModalComponent implements OnInit {
   ngOnInit() {
   }
 
-  closeSavingModal($event, modal: NgbActiveModal) {
+  closeSavingModal($event: Event, modal: NgbActiveModal) {
     modal.close('Saved');
     this.handleFormSave.emit($event);
   }
