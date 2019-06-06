@@ -27,6 +27,7 @@ const router = (db, spotifyApi) => {
       const tokens = await spotifyApi.authorizationCodeGrant(data.code);
       spotifyApi.setAccessToken(tokens.body.access_token);
       spotifyApi.setRefreshToken(tokens.body.refresh_token);
+      const expiresInMilliseconds = tokens.body.expires_in * 1000;
 
       const profile = await spotifyApi.getMe();
       const { value: user } = await db.collection('users').findOneAndUpdate({
@@ -41,7 +42,7 @@ const router = (db, spotifyApi) => {
           returnOriginal: false
         });
 
-      const token = newToken(user, tokens.body.expires_in * 1000);
+      const token = newToken(user, expiresInMilliseconds);
       return res.status(201).send({ token });
     } catch (e) {
       return res.status(500).json({ error: e.message });
@@ -56,9 +57,11 @@ const authenticate = db => async (req, res, next) => {
     const { authorization } = req.headers;
     const [, token] = authorization.split('Bearer ');
 
+    // Ensure valid token
     const user = await verifyToken(token);
     if (!user) throw new Error();
 
+    // Ensure existing user
     const data = await db.collection('users').findOne({
       _id: new ObjectID(user.id)
     });
