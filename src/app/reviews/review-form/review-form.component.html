@@ -13,8 +13,10 @@
       placeholder="Artist Name"
       formControlName="artist"
       required
-      [class.is-invalid]="form.get('artist').invalid"
-      [class.is-valid]="!form.get('artist').invalid"
+      [ngClass]="{
+        'is-invalid': form.get('artist').invalid,
+        'is-valid': !form.get('artist').invalid
+      }"
     />
   </div>
   <div class="form-group">
@@ -27,8 +29,10 @@
       placeholder="Album Name"
       formControlName="album"
       required
-      [class.is-invalid]="form.get('album').invalid"
-      [class.is-valid]="!form.get('album').invalid"
+      [ngClass]="{
+        'is-invalid': form.get('album').invalid,
+        'is-valid': !form.get('album').invalid
+      }"
     />
   </div>
   <div class="form-group">
@@ -41,8 +45,10 @@
       placeholder="Spotify ID"
       formControlName="spotifyId"
       required
-      [class.is-invalid]="form.get('spotifyId').invalid"
-      [class.is-valid]="!form.get('spotifyId').invalid"
+      [ngClass]="{
+        'is-invalid': form.get('spotifyId').invalid,
+        'is-valid': !form.get('spotifyId').invalid
+      }"
     />
   </div>
   <div class="form-group">
@@ -89,8 +95,10 @@
         placeholder="yyyy-mm-dd"
         formControlName="dateListened"
         required
-        [class.is-invalid]="form.get('dateListened').invalid"
-        [class.is-valid]="!form.get('dateListened').invalid"
+        [ngClass]="{
+          'is-invalid': form.get('dateListened').invalid,
+          'is-valid': !form.get('dateListened').invalid
+        }"
       />
     </div>
   </div>
