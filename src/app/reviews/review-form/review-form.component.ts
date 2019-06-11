@@ -3,7 +3,8 @@ import {
   Input,
   OnChanges,
   Output,
-  EventEmitter
+  EventEmitter,
+  DoCheck
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Review } from '../review';
@@ -14,9 +15,10 @@ import { AlertService } from 'src/app/core/alert/alert.service';
   templateUrl: './review-form.component.html',
   styleUrls: ['./review-form.component.css']
 })
-export class ReviewFormComponent implements OnChanges {
+export class ReviewFormComponent implements OnChanges, DoCheck {
   @Input() review: Review;
   @Output() handleSubmit = new EventEmitter();
+  @Output() handleDirtyForm = new EventEmitter();
   form: FormGroup;
 
   constructor(
@@ -40,6 +42,10 @@ export class ReviewFormComponent implements OnChanges {
       rating: [this.review.rating, Validators.required],
       yearReleased: [this.review.yearReleased]
     });
+  }
+
+  ngDoCheck() {
+    this.handleDirtyForm.emit(this.form.dirty);
   }
 
   submit() {

@@ -21,6 +21,7 @@
     <app-review-form
       [review]="review"
       (handleSubmit)="closeSavingModal($event, modal)"
+      (handleDirtyForm)="updateFormHasChanged($event)"
     >
     </app-review-form>
   </div>

@@ -124,6 +124,6 @@
   <button
     type="submit"
     class="btn btn-primary"
-    [disabled]="!form.valid"
+    [disabled]="!form.valid || form.pristine"
   >Submit</button>
 </form>
