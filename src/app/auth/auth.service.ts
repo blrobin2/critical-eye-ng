@@ -25,7 +25,7 @@ export class AuthService {
     return new Promise((resolve) => {
       this.http
         .get(`${environment.apiEndpoint}/auth/spotify/callback?code=${code}`)
-        .subscribe(({ token }: { token: string}) => {
+        .subscribe(({ token }: { token: string }) => {
           this.setToken(token);
           this.alertService.addAlert({
             type: 'success',

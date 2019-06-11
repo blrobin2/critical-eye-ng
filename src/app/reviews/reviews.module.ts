@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AlbumSearchComponent } from '../core/album-search/album-search.component';
 import { SortableDirective } from '../core/sortable.directive';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '../auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,11 @@ import { SortableDirective } from '../core/sortable.directive';
     FormsModule,
     ReactiveFormsModule,
     ReviewsRoutingModule
-  ]
+  ],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }]
 })
 export class ReviewsModule { }

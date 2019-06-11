@@ -35,7 +35,7 @@ export class ReviewFormModalComponent {
 
   openReviewModal(content: TemplateRef<string>) {
     this.modalService.open(content, {
-      ariaLabelledBy: 'modal-basic-title',
+      ariaLabelledBy: 'modal-review-form-title',
       beforeDismiss: () => {
         if (this.reviewIsDirty) {
           return this.dialogService.confirm('Discard unsaved changes?').toPromise();

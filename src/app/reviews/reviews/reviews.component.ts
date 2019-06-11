@@ -6,6 +6,7 @@ import { SortEvent } from '../../core/sortable.directive';
 import { AlbumSearchService, AlbumSearchResult } from '../../core/album-search/album-search.service';
 import { AlertService } from '../../core/alert/alert.service';
 import { DialogService } from 'src/app/core/dialog.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reviews',
@@ -87,29 +88,31 @@ export class ReviewsComponent implements OnInit {
   deleteReview(review: Review) {
     const message = `Are you sure you wish to delete your review for:
 ${review.artist} - ${review.album}?`;
-    this.dialogService.confirm(message).subscribe((deleteIt: boolean) => {
-      if (deleteIt) {
-        this.alertService.addAlert({
-          type: 'info',
-          message: 'Review deleted'
-        });
-        if (this.selectedReview._id === review._id) {
-          this.selectedReview = this.emptyReview;
+    this.dialogService.confirm(message).pipe(
+      tap((deleteIt: boolean) => {
+        if (deleteIt) {
+          this.alertService.addAlert({
+            type: 'info',
+            message: 'Review deleted'
+          });
+          if (this.selectedReview._id === review._id) {
+            this.selectedReview = this.emptyReview;
+          }
         }
-      }
-    });
+      })
+    );
   }
 
   changePageSize(size: string) {
-    this.reviewService.pageSize = parseInt(size, 10);
+    this.reviewService.pageSize = +size;
   }
 
   changePage(page: string) {
-    this.reviewService.page = parseInt(page, 10);
+    this.reviewService.page = +page;
   }
 
   populateReviewForm(searchResult: AlbumSearchResult) {
     this.searchResults = [];
-    this.selectedReview = Object.assign({}, this.emptyReview, searchResult);
+    this.selectedReview = { ...this.emptyReview, ...searchResult };
   }
 }

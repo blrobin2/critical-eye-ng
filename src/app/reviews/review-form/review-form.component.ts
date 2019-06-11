@@ -45,6 +45,8 @@ export class ReviewFormComponent implements OnChanges, DoCheck {
   }
 
   ngDoCheck() {
+    // Provide a way for parent to know if user has made unsaved changes
+    // to form
     this.handleDirtyForm.emit(this.form.dirty);
   }
 

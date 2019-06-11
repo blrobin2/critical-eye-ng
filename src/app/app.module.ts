@@ -26,11 +26,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     ReviewsModule,
     AuthModule
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  }],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

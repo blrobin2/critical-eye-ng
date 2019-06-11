@@ -9,5 +9,9 @@ import { AlertService } from './core/alert/alert.service';
 export class AppComponent {
   title = 'critical-eye-ng';
 
-  constructor(public alertService: AlertService) {}
+  constructor(private alertService: AlertService) {}
+
+  get alerts() {
+    return this.alertService.alerts;
+  }
 }

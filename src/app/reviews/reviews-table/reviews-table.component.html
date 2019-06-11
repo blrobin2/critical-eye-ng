@@ -35,8 +35,8 @@
           <img
             *ngIf="review.artwork"
             class="album-cover"
-            src="{{ review.artwork }}"
-            alt="{{ review.artist }}: {{ review.album }}" />
+            src="{{review.artwork}}"
+            alt="{{review.artist}}: {{review.album}}" />
         </td>
         <td>{{ review.rating | starReview }}</td>
         <td>
