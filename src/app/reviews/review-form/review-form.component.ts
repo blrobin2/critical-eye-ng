@@ -46,7 +46,8 @@ export class ReviewFormComponent implements OnChanges, DoCheck {
 
   ngDoCheck() {
     // Provide a way for parent to know if user has made unsaved changes
-    // to form
+    // to form. I know this is bad and fires a ton, but I have not
+    // observed any performance issues (yet)
     this.handleDirtyForm.emit(this.form.dirty);
   }
 
