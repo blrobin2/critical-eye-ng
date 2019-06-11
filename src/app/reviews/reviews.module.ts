@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ReviewsRoutingModule } from './reviews-routing.module';
-import { ReviewsComponent } from './reviews.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 import { ReviewsTableComponent } from './reviews-table/reviews-table.component';
 import { ReviewFormComponent } from './review-form/review-form.component';
 import { ReviewFormModalComponent } from './review-form-modal/review-form-modal.component';

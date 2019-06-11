@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Review } from './review';
+import { Review } from '../review';
 import { Observable, Subject } from 'rxjs';
-import { ReviewService } from './review.service';
-import { SortEvent } from '../core/sortable.directive';
-import { AlbumSearchService, AlbumSearchResult } from '../core/album-search/album-search.service';
-import { AuthService } from '../auth/auth.service';
-import { AlertService } from '../core/alert/alert.service';
+import { ReviewService } from '../review.service';
+import { SortEvent } from '../../core/sortable.directive';
+import { AlbumSearchService, AlbumSearchResult } from '../../core/album-search/album-search.service';
+import { AuthService } from '../../auth/auth.service';
+import { AlertService } from '../../core/alert/alert.service';
 
 @Component({
   selector: 'app-reviews',
