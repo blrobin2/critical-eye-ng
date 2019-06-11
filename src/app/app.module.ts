@@ -13,8 +13,9 @@ import { SortableDirective } from './core/sortable.directive';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AlbumSearchComponent } from './core/album-search/album-search.component';
 import { ReviewFormModalComponent } from './reviews/review-form-modal/review-form-modal.component';
-import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { AuthInterceptor } from './auth/auth.interceptor';
 import { AlertComponent } from './core/alert/alert.component';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AlertComponent } from './core/alert/alert.component';
     HttpClientModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AuthModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

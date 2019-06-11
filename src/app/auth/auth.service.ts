@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { buildQueryString } from '../../utils';
+import { environment } from 'src/environments/environment';
+import { buildQueryString } from 'src/app/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +20,13 @@ export class AuthService {
     window.location.replace(`https://accounts.spotify.com/authorize${params}`);
   }
 
-  spotifyCallback(code: string) {
+  spotifyCallback(code: string): Promise<boolean> {
     return new Promise((resolve) => {
       this.http
         .get(`${environment.apiEndpoint}/auth/spotify/callback?code=${code}`)
         .subscribe(({ token }: { token: string}) => {
           this.setToken(token);
-          resolve();
+          resolve(true);
         });
     });
   }
@@ -37,6 +37,10 @@ export class AuthService {
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  get isLoggedIn() {
+    return this.getToken() !== null;
   }
 
   logout() {

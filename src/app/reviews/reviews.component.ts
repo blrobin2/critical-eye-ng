@@ -4,8 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { ReviewService } from './review.service';
 import { SortEvent } from '../core/sortable.directive';
 import { AlbumSearchService, AlbumSearchResult } from '../core/album-search/album-search.service';
-import { AuthService } from '../core/auth/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 import { AlertService } from '../core/alert/alert.service';
 
 @Component({
@@ -24,35 +23,12 @@ export class ReviewsComponent implements OnInit {
     public reviewService: ReviewService,
     private albumSearchService: AlbumSearchService,
     public authService: AuthService,
-    private route: ActivatedRoute,
     private alertService: AlertService
   ) {
   }
 
   ngOnInit() {
-    this.handleAuth();
-  }
-
-  private handleAuth() {
-    // If we have the token, we can just begin
-    if (this.authService.getToken()) {
-      this.startServices();
-    } else {
-      // If we have a fragment, we got it from spotify authenticating us
-      // so we pass it on to our backend in order to get a token
-      // And THEN we can start services
-      this.route.queryParams.subscribe(params => {
-        if (params.code) {
-          this.authService.spotifyCallback(params.code).then(() => {
-            this.alertService.addAlert({
-              type: 'success',
-              message: 'Successfully logged in!'
-            });
-            this.startServices();
-          });
-        }
-      });
-    }
+    this.startServices();
   }
 
   private startServices() {
@@ -78,10 +54,6 @@ export class ReviewsComponent implements OnInit {
       yearReleased: '',
       href: ''
     };
-  }
-
-  handleLogin() {
-    this.authService.login();
   }
 
   saveReview(review: Review) {

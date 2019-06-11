@@ -1,10 +1,4 @@
-<div *ngIf="!authService.getToken();else: loggedIn">
-  <p>Not logged in!</p>
-  <button class="btn btn-lg btn-primary" (click)="handleLogin()">Login</button>
-</div>
-
-<ng-template #loggedIn>
-  <div class="row">
+<div class="row">
   <div class="col">
     <div class="float-right">
       <app-review-form-modal
@@ -17,7 +11,7 @@
       <button
         type="button"
         class="btn btn-info"
-        (click)="authService.logout()">
+        routerLink="login">
         Log Out
       </button>
     </div>
@@ -42,4 +36,3 @@
     ></app-reviews-table>
   </div>
 </div>
-</ng-template>
