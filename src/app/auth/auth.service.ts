@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { buildQueryString } from 'src/app/utils';
+import { AlertService } from '../core/alert/alert.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private alertService: AlertService) { }
 
   login() {
     const params = buildQueryString({
@@ -26,6 +27,10 @@ export class AuthService {
         .get(`${environment.apiEndpoint}/auth/spotify/callback?code=${code}`)
         .subscribe(({ token }: { token: string}) => {
           this.setToken(token);
+          this.alertService.addAlert({
+            type: 'success',
+            message: 'Successfully logged in'
+          });
           resolve(true);
         });
     });
@@ -45,6 +50,9 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    window.location.href = '/';
+    this.alertService.addAlert({
+      type: 'info',
+      message: 'Successfully logged out'
+    });
   }
 }

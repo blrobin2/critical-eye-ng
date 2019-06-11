@@ -4,8 +4,8 @@ import { Observable, Subject } from 'rxjs';
 import { ReviewService } from '../review.service';
 import { SortEvent } from '../../core/sortable.directive';
 import { AlbumSearchService, AlbumSearchResult } from '../../core/album-search/album-search.service';
-import { AuthService } from '../../auth/auth.service';
 import { AlertService } from '../../core/alert/alert.service';
+import { DialogService } from 'src/app/core/dialog.service';
 
 @Component({
   selector: 'app-reviews',
@@ -22,8 +22,8 @@ export class ReviewsComponent implements OnInit {
   constructor(
     public reviewService: ReviewService,
     private albumSearchService: AlbumSearchService,
-    public authService: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dialogService: DialogService
   ) {
   }
 
@@ -58,6 +58,10 @@ export class ReviewsComponent implements OnInit {
 
   saveReview(review: Review) {
     this.reviewService.saveReview(review).add(() => {
+      this.alertService.addAlert({
+        type: 'success',
+        message: 'Review saved'
+      });
       this.selectedReview = this.emptyReview;
     });
   }
@@ -81,8 +85,10 @@ export class ReviewsComponent implements OnInit {
   }
 
   deleteReview(review: Review) {
-    if (confirm(`Are you sure you wish to delete your review for ${review.artist} - ${review.album}?`)) {
-      this.reviewService.deleteReview(review).add(() => {
+    const message = `Are you sure you wish to delete your review for:
+${review.artist} - ${review.album}?`;
+    this.dialogService.confirm(message).subscribe((deleteIt: boolean) => {
+      if (deleteIt) {
         this.alertService.addAlert({
           type: 'info',
           message: 'Review deleted'
@@ -90,8 +96,8 @@ export class ReviewsComponent implements OnInit {
         if (this.selectedReview._id === review._id) {
           this.selectedReview = this.emptyReview;
         }
-      });
-    }
+      }
+    });
   }
 
   changePageSize(size: string) {
