@@ -9,4 +9,10 @@ export interface Review {
     href: string;
     rating: number;
     yearReleased: string;
+    createdBy?: string;
+    createdByUser?: {
+        _id: string,
+        spotifyId: string,
+        name: string
+    };
 }

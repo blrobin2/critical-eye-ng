@@ -13,6 +13,7 @@ import { AlbumSearchComponent } from '../core/album-search/album-search.componen
 import { SortableDirective } from '../core/sortable.directive';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../auth/auth.interceptor';
+import { ReviewDetailComponent } from './review-detail/review-detail.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AuthInterceptor } from '../auth/auth.interceptor';
     ReviewsTableComponent,
     ReviewFormModalComponent,
     ReviewFormComponent,
-    AlbumSearchComponent
+    AlbumSearchComponent,
+    ReviewDetailComponent
   ],
   imports: [
     CommonModule,

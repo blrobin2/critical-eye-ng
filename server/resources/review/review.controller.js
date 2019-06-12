@@ -17,10 +17,28 @@ const getMany = (db) => async (req, res) => {
 const getOne = (db) => async (req, res) => {
     try {
       const reviews = db.collection('reviews');
-      const data = await reviews.findOne({
-        createdBy: new ObjectID(req.user._id),
-        _id: new ObjectID(req.params.id)
-      });
+      const [data] = await reviews.aggregate(
+        {
+          $match: {
+            _id: new ObjectID(req.params.id),
+            createdBy: new ObjectID(req.user._id)
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'createdBy',
+            foreignField: '_id',
+            as: 'createdByUser'
+          }
+        }, {
+          $unwind: '$createdByUser'
+        }, {
+          $group: {
+            createdByUser: null
+          }
+        }
+      ).toArray();
 
       if (! data) {
         return res.status(404).end();

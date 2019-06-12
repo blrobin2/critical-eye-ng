@@ -1,0 +1,41 @@
+<div *ngIf="review$ | async as review; else loading" class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <img
+        class="img-fluid rounded"
+        src="{{review.artwork}}"
+        alt="{{review.artist}}: {{review.album}}"
+      />
+    </div>
+    <div class="col-md-9">
+      <h3>
+        <small>{{review.artist}}</small><br>
+        {{review.album}} ({{review.yearReleased}})
+      </h3>
+      <p>
+        {{review.rating | starReview}}<br>
+        <small>
+          Reviewed: <em>{{review.dateListened | date:'yyyy/MM/dd'}}</em><br>
+          By: <em>{{review.createdByUser.name}}</em>
+        </small>
+      </p>
+      <p>
+        <a
+          href="{{review.href}}"
+          class="btn btn-sm btn-success"
+          target="_blank">
+          Listen
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <p>{{review.description || 'No review written'}}</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>It's loading bro</p>
+</ng-template>

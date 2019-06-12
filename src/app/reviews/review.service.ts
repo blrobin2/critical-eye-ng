@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Review } from './review';
 import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
-import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, delay, switchMap, tap, map } from 'rxjs/operators';
 
 import { SortDirection } from '../core/sortable.directive';
 import { HttpClient } from '@angular/common/http';
@@ -76,6 +76,14 @@ export class ReviewService {
 
     this._search$.next();
     return this;
+  }
+
+  getReview(_id: string): Observable<Review> {
+    return this.http.get(`${this.apiUrl}/${_id}`).pipe(
+      map((obj: { data: Review }) => {
+        return obj.data;
+      })
+    );
   }
 
   saveReview(review: Review) {
