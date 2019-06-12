@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { ReviewDetailComponent } from './review-detail/review-detail.component';
+import { ReviewDetailResolverService } from './review-detail-resolver.service';
 
 const routes: Routes = [
   {
@@ -15,7 +16,10 @@ const routes: Routes = [
       },
       {
         path: 'review/:id',
-        component: ReviewDetailComponent
+        component: ReviewDetailComponent,
+        resolve: {
+          review: ReviewDetailResolverService
+        }
       }
     ]
   },

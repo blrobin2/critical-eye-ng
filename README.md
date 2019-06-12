@@ -9,7 +9,6 @@ This is the third iteration of my Critical Eye application, a way for you to tra
 I try to apply best practices as I learn them and to keep the code as decoupled as possible. I'm always open to learning of a way to do something better.
 
 ## TODO
-* A review detail view so you can read a full review
 * Integrating Aggr for music recommendation page
 * See other user's reviews for the same album
 * Upvote system for other's reviews?
