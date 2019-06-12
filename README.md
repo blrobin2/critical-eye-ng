@@ -10,11 +10,12 @@ I try to apply best practices as I learn them and to keep the code as decoupled 
 
 ## TODO
 * Integrating Aggr for music recommendation page
+  * I have the page, but need to write way to regularly update it
 * See other user's reviews for the same album
 * Upvote system for other's reviews?
-** Fanboying may prevent it from being that useful
-** Would not have downvote to prevent brigading
-** Provide ability to listen or review from that page, the same as we do with album search
+  * Fanboying may prevent it from being that useful
+  * Would not have downvote to prevent brigading
+* Provide ability to listen or review from that page, the same as we do with album search
 
 ## CONSIDERATIONS
 * Should I store the token in localStorage or let Angular's router pass the token around? The former seems to keep concerns separate (although it does make the app more stateful), whereas the latter introduce the token as a property of the component that needs it, that then has to be fed to the AuthInterceptor (or removes the Interceptor altogether?)
