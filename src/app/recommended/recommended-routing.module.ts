@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RecommendedListComponent } from './recommended-list/recommended-list.component';
 
 const routes: Routes = [
-  { path: 'recommended', component: RecommendedListComponent }
+  { path: '', component: RecommendedListComponent }
 ];
 
 @NgModule({

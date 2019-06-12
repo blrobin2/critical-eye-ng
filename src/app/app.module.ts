@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CoreModule } from './core/core.module';
-import { RecommendedModule } from './recommended/recommended.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { RecommendedModule } from './recommended/recommended.module';
     ReactiveFormsModule,
     CoreModule,
     ReviewsModule,
-    RecommendedModule,
     AuthModule
   ],
   providers: [],

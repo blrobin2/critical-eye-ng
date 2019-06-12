@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertService } from './core/alert/alert.service';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,16 @@ import { AlertService } from './core/alert/alert.service';
 export class AppComponent {
   title = 'critical-eye-ng';
 
-  constructor(private alertService: AlertService) {}
+  constructor(
+    private alertService: AlertService,
+    private authService: AuthService
+  ) {}
 
   get alerts() {
     return this.alertService.alerts;
+  }
+
+  get isLoggedIn() {
+    return this.authService.isLoggedIn;
   }
 }
