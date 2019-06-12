@@ -11,6 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../auth/auth.interceptor';
 import { ReviewDetailComponent } from './review-detail/review-detail.component';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ReviewDetailComponent } from './review-detail/review-detail.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    CoreModule,
     ReviewsRoutingModule
   ],
   providers: [{

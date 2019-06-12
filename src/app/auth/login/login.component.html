@@ -1,3 +1,9 @@
-<p>Personal album review tracking</p>
-<button class="btn btn-lg btn-primary" (click)="login()" *ngIf="!isLoggedIn">Login</button>
-<button class="btn btn-lg btn-primary" (click)="logout()" *ngIf="isLoggedIn">Logout</button>
+<div *ngIf="isLoggedIn;else showLogin">
+  <h3>Manage Your Account</h3>
+  <button class="btn btn-lg btn-primary" (click)="logout()">Logout</button>
+</div>
+
+<ng-template #showLogin>
+  <p>Personal album review tracking</p>
+  <button class="btn btn-lg btn-primary" (click)="login()">Login</button>
+</ng-template>

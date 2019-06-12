@@ -6,15 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AlertComponent } from './core/alert/alert.component';
 import { AuthModule } from './auth/auth.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CoreModule } from './core/core.module';
+import { RecommendedModule } from './recommended/recommended.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AlertComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +24,7 @@ import { CoreModule } from './core/core.module';
     ReactiveFormsModule,
     CoreModule,
     ReviewsModule,
+    RecommendedModule,
     AuthModule
   ],
   providers: [],

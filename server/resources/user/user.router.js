@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
-const superagent = require('superagent');
 
 const { ObjectID } = require('../../utils/db');
 

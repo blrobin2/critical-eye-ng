@@ -1,6 +1,6 @@
 <form
   class="form form-inline"
-  (submit)="searchTerm$.next($event.target.q.value)">
+  (submit)="$event.preventDefault();searchTerm$.next($event.target.q.value)">
   <div class="form-group">
     <label for="q">Search for Album</label>
     <input type="text" name="q" id="q" class="form-control">
