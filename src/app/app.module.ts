@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertComponent } from './core/alert/alert.component';
 import { AuthModule } from './auth/auth.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    CoreModule,
     ReviewsModule,
     AuthModule
   ],
