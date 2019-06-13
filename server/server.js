@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const helmet = require('helmet');
 const { json, urlencoded } = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -20,6 +21,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 app.disable('x-powered-by');
+app.use(helmet());
 app.use(cors());
 app.use(compression());
 app.use(json());
