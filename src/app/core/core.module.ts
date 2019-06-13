@@ -5,23 +5,28 @@ import { SortableDirective } from './sortable.directive';
 import { AlbumSearchComponent } from './album-search/album-search.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AlertComponent } from './alert/alert.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     StarReviewPipe,
     SortableDirective,
     AlertComponent,
-    AlbumSearchComponent
+    AlbumSearchComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,
-    NgbModule
+    NgbModule,
+    RouterModule
   ],
   exports: [
     StarReviewPipe,
     SortableDirective,
     AlertComponent,
-    AlbumSearchComponent
+    AlbumSearchComponent,
+    NavbarComponent
   ]
 })
 export class CoreModule { }
