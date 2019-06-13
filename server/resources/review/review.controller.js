@@ -1,12 +1,8 @@
 const { ObjectID } = require('../../utils/db');
 
-const getMany = (db) => async (req, res) => {
+const getMany = (db, cache) => async (req, res) => {
   try {
-    const reviews = db.collection('reviews');
-    const data = await reviews.find({
-      createdBy: new ObjectID(req.user._id)
-    }).toArray();
-
+    const data = await getCachedMany(db, req.user._id, cache);
     res.status(200).json({ data });
   } catch (e) {
     console.error(e)
@@ -14,14 +10,60 @@ const getMany = (db) => async (req, res) => {
   }
 };
 
-const getOne = (db) => async (req, res) => {
+const getCachedMany = (db, userId, cache) => {
+  const key = `${userId}-reviews`;
+  return new Promise((resolve, reject) => {
+    cache.get(key, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      if (result) {
+        return resolve(result);
+      }
+
+      db.collection('reviews').find({
+        createdBy: new ObjectID(userId)
+      }).toArray((err, reviews) => {
+        if (err) {
+          return reject(err);
+        }
+        // Just big enough for searching and filtering
+        // so we don't hammer the mongoDB server
+        cache.set(key, reviews, { ttl: 5 });
+        resolve(reviews);
+      });
+    });
+  });
+}
+
+const getOne = (db, cache) => async (req, res) => {
     try {
-      const reviews = db.collection('reviews');
-      const [data] = await reviews.aggregate(
+      const data = await getCachedOne(db, req.params.id, req.user._id, cache);
+      if (! data) {
+        return res.status(404).end();
+      }
+
+      res.status(200).json({ data });
+    } catch (e) {
+      res.status(500).send({ error: e.message });
+    }
+};
+
+const getCachedOne = (db, id, userId, cache) => {
+  return new Promise((resolve, reject) => {
+    cache.get(id, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      if (result) {
+        return resolve(result);
+      }
+
+      db.collection('reviews').aggregate(
         {
           $match: {
-            _id: new ObjectID(req.params.id),
-            createdBy: new ObjectID(req.user._id)
+            _id: new ObjectID(id),
+            createdBy: new ObjectID(userId)
           }
         },
         {
@@ -38,17 +80,16 @@ const getOne = (db) => async (req, res) => {
             createdByUser: null
           }
         }
-      ).toArray();
-
-      if (! data) {
-        return res.status(404).end();
-      }
-
-      res.status(200).json({ data });
-    } catch (e) {
-      res.status(500).send({ error: e.message });
-    }
-};
+      ).toArray((err, [review]) => {
+        if (err) {
+          return reject(err);
+        }
+        cache.set(id, review, { ttl: 10 });
+        resolve(review);
+      });
+    });
+  });
+}
 
 const createOne = db => async (req, res) => {
   try {
@@ -125,9 +166,9 @@ const removeOne = db => async (req, res) => {
   }
 };
 
-module.exports = db => ({
-  getMany: getMany(db),
-  getOne: getOne(db),
+module.exports = (db, cache) => ({
+  getMany: getMany(db, cache),
+  getOne: getOne(db, cache),
   createOne: createOne(db),
   updateOne: updateOne(db),
   removeOne: removeOne(db)

@@ -51,7 +51,7 @@ const router = (db, spotifyApi) => {
   return router;
 };
 
-const authenticate = db => async (req, res, next) => {
+const authenticate = (db, cache) => async (req, res, next) => {
   try {
     const { authorization } = req.headers;
     const [, token] = authorization.split('Bearer ');
@@ -60,10 +60,7 @@ const authenticate = db => async (req, res, next) => {
     const user = await verifyToken(token);
     if (!user) throw new Error();
 
-    // Ensure existing user
-    const data = await db.collection('users').findOne({
-      _id: new ObjectID(user.id)
-    });
+    const data = await getCachedUser(db, user.id, cache);
     if (! data) throw new Error();
 
     req.user = data;
@@ -71,6 +68,28 @@ const authenticate = db => async (req, res, next) => {
   } catch (e) {
     res.status(401).end();
   }
+}
+
+function getCachedUser(db, id, cache) {
+  return new Promise((resolve, reject) => {
+    cache.get(id, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      if (result) {
+        return resolve(result);
+      }
+
+      db.collection('users').findOne({
+        _id: new ObjectID(id)
+      })
+        .then(user => {
+          cache.set(id, user, { ttl: 6000 });
+          resolve(user);
+        })
+        .catch(reject);
+    });
+  });
 }
 
 module.exports = {

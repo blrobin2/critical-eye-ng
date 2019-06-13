@@ -20,5 +20,5 @@ const router = controllers => {
 };
 
 module.exports = {
-  getReviewRouter: db => router(ctrls(db))
+  getReviewRouter: (db, cache) => router(ctrls(db, cache))
 }
