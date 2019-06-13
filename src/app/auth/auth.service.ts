@@ -1,18 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { buildQueryString } from 'src/app/utils';
 import { AlertService } from '../core/alert/alert.service';
+import { APP_CONFIG, AppConfig } from '../app-config.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient, private alertService: AlertService) { }
+  constructor(
+    private http: HttpClient,
+    private alertService: AlertService,
+    @Inject(APP_CONFIG) private config: AppConfig
+  ) { }
 
   login() {
     const params = buildQueryString({
-      client_id: environment.spotifyClientId,
+      client_id: this.config.spotifyClientId,
       response_type: 'code',
       redirect_uri: window.location.origin,
       scope: ['user-read-email', 'user-read-private'].join(' '),
@@ -24,7 +28,7 @@ export class AuthService {
   spotifyCallback(code: string): Promise<boolean> {
     return new Promise((resolve) => {
       this.http
-        .get(`${environment.apiEndpoint}/auth/spotify/callback?code=${code}`)
+        .get(`${this.config.apiEndpoint}/auth/spotify/callback?code=${code}`)
         .subscribe(({ token }: { token: string }) => {
           this.setToken(token);
           this.alertService.addAlert({

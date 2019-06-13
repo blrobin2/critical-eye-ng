@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Review } from './review';
 import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap, map } from 'rxjs/operators';
 
 import { SortDirection } from '../core/sortable.directive';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { APP_CONFIG, AppConfig } from '../app-config.interface';
 
 interface SearchResult {
   reviews: Review[];
@@ -49,7 +49,7 @@ export class ReviewService {
   private _reviews$ = new BehaviorSubject<Review[]>([]);
   private _total$ = new BehaviorSubject<number>(0);
 
-  private apiUrl = `${environment.apiEndpoint}/api/review`;
+  private apiUrl: string;
 
   private state: State = {
     page: 1,
@@ -59,7 +59,11 @@ export class ReviewService {
     sortDirection: ''
   };
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    @Inject(APP_CONFIG) config: AppConfig
+  ) {
+    this.apiUrl = `${config.apiEndpoint}/api/review`;
   }
 
   start() {

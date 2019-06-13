@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CoreModule } from './core/core.module';
+import { APP_CONFIG } from './app-config.interface';
+import { CRITICAL_EYE_CONFIG } from './app.config';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,12 @@ import { CoreModule } from './core/core.module';
     ReviewsModule,
     AuthModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_CONFIG,
+      useValue: CRITICAL_EYE_CONFIG
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

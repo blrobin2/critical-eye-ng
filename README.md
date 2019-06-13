@@ -8,6 +8,13 @@ This is the third iteration of my Critical Eye application, a way for you to tra
 
 I try to apply best practices as I learn them and to keep the code as decoupled as possible. I'm always open to learning of a way to do something better.
 
+## USAGE
+If you want to use this project:
+* You'll need an `.env` file in the `server` folder for server config
+* You'll need an `app.config.ts` file in the `src/app` folder for client config
+
+In both cases, this is meant to protect sensitive data, as well as allow for development and production environments
+
 ## TODO
 * Integrating Aggr for music recommendation page
   * I have the page, but need to write way to regularly update it

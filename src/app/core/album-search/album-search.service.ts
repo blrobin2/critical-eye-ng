@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
 import { buildQueryString } from '../../utils';
+import { APP_CONFIG, AppConfig } from 'src/app/app-config.interface';
 
 export interface AlbumSearchResult {
   spotifyId: string;
@@ -17,9 +17,14 @@ export interface AlbumSearchResult {
   providedIn: 'root'
 })
 export class AlbumSearchService {
-  baseUrl = `${environment.apiEndpoint}/api/search`;
+  baseUrl: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    @Inject(APP_CONFIG) config: AppConfig
+  ) {
+   this.baseUrl = `${config.apiEndpoint}/api/search`;
+  }
 
   search(terms: Observable<string>) {
     return terms
