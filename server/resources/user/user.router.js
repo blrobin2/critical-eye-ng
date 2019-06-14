@@ -3,11 +3,10 @@ const jwt = require('jsonwebtoken');
 
 const { ObjectID } = require('../../utils/db');
 
-const newToken = (user, expiration) => {
-  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+const newToken = (user, expiration) =>
+  jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: expiration
   });
-};
 
 const verifyToken = token =>
   new Promise((resolve, reject) => {
@@ -70,8 +69,8 @@ const authenticate = (db, cache) => async (req, res, next) => {
   }
 }
 
-function getCachedUser(db, id, cache) {
-  return new Promise((resolve, reject) => {
+const getCachedUser = (db, id, cache) =>
+  new Promise((resolve, reject) => {
     cache.get(id, (err, result) => {
       if (err) {
         return reject(err);
@@ -80,9 +79,10 @@ function getCachedUser(db, id, cache) {
         return resolve(result);
       }
 
-      db.collection('users').findOne({
-        _id: new ObjectID(id)
-      })
+      db.collection('users')
+        .findOne({
+          _id: new ObjectID(id)
+        })
         .then(user => {
           cache.set(id, user, { ttl: 6000 });
           resolve(user);
@@ -90,7 +90,6 @@ function getCachedUser(db, id, cache) {
         .catch(reject);
     });
   });
-}
 
 module.exports = {
   getAuthRouter: router,

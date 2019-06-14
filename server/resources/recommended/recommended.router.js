@@ -15,8 +15,8 @@ const router = (db, cache) => {
   return router;
 };
 
-function getCachedRecommendations(db, cache) {
-  return new Promise((resolve, reject) => {
+const getCachedRecommendations = (db, cache) =>
+  new Promise((resolve, reject) => {
     cache.get('recommended', (err, result) => {
       if (err) {
         return reject(err);
@@ -34,7 +34,6 @@ function getCachedRecommendations(db, cache) {
       });
     });
   });
-}
 
 module.exports = {
   getRecommendedRouter: router

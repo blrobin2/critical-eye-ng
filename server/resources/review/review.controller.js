@@ -10,9 +10,9 @@ const getMany = (db, cache) => async (req, res) => {
   }
 };
 
-const getCachedMany = (db, userId, cache) => {
-  const key = `${userId}-reviews`;
-  return new Promise((resolve, reject) => {
+const getCachedMany = (db, userId, cache) =>
+  new Promise((resolve, reject) => {
+    const key = `${userId}-reviews`;
     cache.get(key, (err, result) => {
       if (err) {
         return reject(err);
@@ -34,7 +34,6 @@ const getCachedMany = (db, userId, cache) => {
       });
     });
   });
-}
 
 const getOne = (db, cache) => async (req, res) => {
     try {
@@ -49,8 +48,8 @@ const getOne = (db, cache) => async (req, res) => {
     }
 };
 
-const getCachedOne = (db, id, userId, cache) => {
-  return new Promise((resolve, reject) => {
+const getCachedOne = (db, id, userId, cache) =>
+  new Promise((resolve, reject) => {
     cache.get(id, (err, result) => {
       if (err) {
         return reject(err);
@@ -89,7 +88,6 @@ const getCachedOne = (db, id, userId, cache) => {
       });
     });
   });
-}
 
 const createOne = db => async (req, res) => {
   try {
