@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Recommended } from '../recommended';
 import { RecommendedService } from '../recommended.service';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-recommended-list',
@@ -11,12 +12,25 @@ import { RecommendedService } from '../recommended.service';
 export class RecommendedListComponent implements OnInit {
   recommended: Recommended[][];
 
-  constructor(private recommendedService: RecommendedService) { }
+  constructor(
+    private recommendedService: RecommendedService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.recommendedService.getRecommended().subscribe((recommended: Recommended[]) => {
       this.recommended = this.chunk(recommended, 4);
     });
+  }
+
+  reviewAlbum(recommended: Recommended) {
+    const extras: NavigationExtras = {
+      queryParams: {
+        artist: recommended.artist,
+        album: recommended.album
+      }
+    };
+    this.router.navigate([''], extras);
   }
 
   chunk(array: Recommended[], size: number): Recommended[][] {

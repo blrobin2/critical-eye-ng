@@ -10,9 +10,11 @@ const getMany = (db, cache) => async (req, res) => {
   }
 };
 
+const getManyCacheKey = userId => `${userId}-reviews`;
+
 const getCachedMany = (db, userId, cache) =>
   new Promise((resolve, reject) => {
-    const key = `${userId}-reviews`;
+    const key = getManyCacheKey(userId);
     cache.get(key, (err, result) => {
       if (err) {
         return reject(err);
@@ -27,9 +29,7 @@ const getCachedMany = (db, userId, cache) =>
         if (err) {
           return reject(err);
         }
-        // Just big enough for searching and filtering
-        // so we don't hammer the mongoDB server
-        cache.set(key, reviews, { ttl: 5 });
+        cache.set(key, reviews, { ttl: 6000 });
         resolve(reviews);
       });
     });
@@ -89,7 +89,7 @@ const getCachedOne = (db, id, userId, cache) =>
     });
   });
 
-const createOne = db => async (req, res) => {
+const createOne = (db, cache) => async (req, res) => {
   try {
     const doc = {
       ...req.body,
@@ -97,13 +97,14 @@ const createOne = db => async (req, res) => {
     };
     const cleaned = cleanRequestData(doc);
     const data = await db.collection('reviews').insertOne(cleaned);
+    await clearManyCache(cache, req.user._id);
     res.status(201).json({ data: data.ops[0] });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 };
 
-const updateOne = db => async (req, res) => {
+const updateOne = (db, cache) => async (req, res) => {
   try {
     const doc = {
       ...req.body,
@@ -124,6 +125,8 @@ const updateOne = db => async (req, res) => {
     if (!data) {
       return res.status(404).end();
     }
+
+    await clearManyCache(cache, req.user._id);
 
     res.status(200).json({ data: data });
   } catch (e) {
@@ -147,7 +150,7 @@ const cleanRequestData = (doc) => {
   return doc;
 }
 
-const removeOne = db => async (req, res) => {
+const removeOne = (db, cache) => async (req, res) => {
   try {
     const { value: data } = await db.collection('reviews').findOneAndDelete({
       _id: new ObjectID(req.params.id),
@@ -158,16 +161,30 @@ const removeOne = db => async (req, res) => {
       return res.status(404).end();
     }
 
+    // Clear cache so that getAll doesn't return deleted review
+    await clearManyCache(cache, req.user._id);
+
     res.status(200).json({ data });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 };
 
+const clearManyCache = (cache, userId) =>
+  new Promise((resolve, reject) => {
+    const key = getManyCacheKey(userId);
+    cache.del(key, (err, done) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(done);
+    });
+  });
+
 module.exports = (db, cache) => ({
   getMany: getMany(db, cache),
   getOne: getOne(db, cache),
-  createOne: createOne(db),
-  updateOne: updateOne(db),
-  removeOne: removeOne(db)
+  createOne: createOne(db, cache),
+  updateOne: updateOne(db, cache),
+  removeOne: removeOne(db, cache)
 });

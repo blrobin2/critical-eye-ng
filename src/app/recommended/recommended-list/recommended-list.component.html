@@ -22,6 +22,11 @@
             href="{{result.link}}">
             Listen on Spotify
           </a>
+          <button
+            class="btn btn-info"
+            (click)="reviewAlbum(result)">
+            Review
+          </button>
           <span *ngIf="!result.link">Not available on Spotify</span>
           <!-- <button class="btn btn-primary" (click)="handleReviewButton.emit(result)">
             Review

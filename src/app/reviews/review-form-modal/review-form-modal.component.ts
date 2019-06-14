@@ -4,7 +4,9 @@ import {
   Input,
   TemplateRef,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnChanges,
+  ViewChild,
 } from '@angular/core';
 import { Review } from 'src/app/reviews/review';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,13 +19,19 @@ import { DialogService } from 'src/app/core/dialog.service';
   templateUrl: './review-form-modal.component.html',
   styleUrls: ['./review-form-modal.component.css']
 })
-export class ReviewFormModalComponent {
+export class ReviewFormModalComponent implements OnChanges {
   @Input() review: Review;
   @Input() searchTerm$: Subject<string>;
   @Input() searchResults: AlbumSearchResult[];
+  @Input() open: boolean;
 
   @Output() handleFormSave = new EventEmitter();
   @Output() handleReviewButton = new EventEmitter();
+
+  @ViewChild('reviewFormModal', {
+    read: TemplateRef,
+    static: false
+  }) reviewFormModal: TemplateRef<string>;
 
   // Whether or not the child form has received any changes from the user
   reviewIsDirty = false;
@@ -31,7 +39,16 @@ export class ReviewFormModalComponent {
   constructor(
     private modalService: NgbModal,
     private dialogService: DialogService
-  ) { }
+  ) {
+  }
+
+  ngOnChanges() {
+    // If the parent asks to open a modal, we havwn't already opened one
+    // and if the reviewFormModal template has been loaded
+    if (this.open && !this.modalService.hasOpenModals() && this.reviewFormModal) {
+        this.openReviewModal(this.reviewFormModal);
+    }
+  }
 
   openReviewModal(content: TemplateRef<string>) {
     this.modalService.open(content, {

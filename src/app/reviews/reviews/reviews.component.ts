@@ -1,30 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Review } from '../review';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { ReviewService } from '../review.service';
 import { SortEvent } from '../../core/sortable.directive';
 import { AlbumSearchService, AlbumSearchResult } from '../../core/album-search/album-search.service';
 import { AlertService } from '../../core/alert/alert.service';
 import { DialogService } from 'src/app/core/dialog.service';
 import { tap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviews',
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.css']
 })
-export class ReviewsComponent implements OnInit {
+export class ReviewsComponent implements OnInit, OnDestroy {
   reviews$: Observable<Review[]>;
   total$: Observable<number>;
   searchTerm$ = new Subject<string>();
   searchResults: AlbumSearchResult[];
   selectedReview: Review = this.emptyReview;
 
+  openReviewModalOnLoad = false;
+  albumSearch$: Subscription;
+  queryParams$: Subscription;
+
   constructor(
     public reviewService: ReviewService,
     private albumSearchService: AlbumSearchService,
     private alertService: AlertService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
@@ -32,14 +39,42 @@ export class ReviewsComponent implements OnInit {
     this.startServices();
   }
 
+  ngOnDestroy() {
+    this.stopServices();
+  }
+
   private startServices() {
     this.reviewService.start();
     this.reviews$ = this.reviewService.reviews$;
     this.total$ = this.reviewService.total$;
-    this.albumSearchService.search(this.searchTerm$)
-      .subscribe(searchResults => {
-        this.searchResults = searchResults;
-      });
+    this.albumSearch$ = this.albumSearchService.search(this.searchTerm$)
+      .subscribe(
+        searchResults => {
+          this.searchResults = searchResults;
+        }, err => {
+          this.alertService.addAlert({
+            type: 'danger',
+            message: 'Your Spotify session has expired, please log out and log in'
+          });
+          this.openReviewModalOnLoad = false;
+        }
+      );
+    // If we pass along artist and album, we want to search for that
+    // album in the review modal
+    this.queryParams$ = this.route.queryParamMap.subscribe(params => {
+      const artist = params.get('artist');
+      const album = params.get('album');
+      if (artist && album) {
+        this.searchTerm$.next(`${artist} ${album}`);
+        this.openReviewModalOnLoad = true;
+      }
+    });
+  }
+
+  private stopServices() {
+    this.albumSearch$.unsubscribe();
+    this.queryParams$.unsubscribe();
+    this.searchTerm$.unsubscribe();
   }
 
   get emptyReview() {
@@ -50,7 +85,7 @@ export class ReviewsComponent implements OnInit {
       dateListened: new Date(),
       description: '',
       _id: '',
-      rating: 5,
+      rating: 0,
       spotifyId: '',
       yearReleased: '',
       href: ''
@@ -64,6 +99,8 @@ export class ReviewsComponent implements OnInit {
         message: 'Review saved'
       });
       this.selectedReview = this.emptyReview;
+      this.openReviewModalOnLoad = false;
+      this.router.navigate(['']);
     });
   }
 
@@ -88,9 +125,9 @@ export class ReviewsComponent implements OnInit {
   deleteReview(review: Review) {
     const message = `Are you sure you wish to delete your review for:
 ${review.artist} - ${review.album}?`;
-    this.dialogService.confirm(message).pipe(
-      tap((deleteIt: boolean) => {
-        if (deleteIt) {
+    this.dialogService.confirm(message).subscribe((deleteIt: boolean) => {
+      if (deleteIt) {
+        this.reviewService.deleteReview(review).add(() => {
           this.alertService.addAlert({
             type: 'info',
             message: 'Review deleted'
@@ -98,9 +135,9 @@ ${review.artist} - ${review.album}?`;
           if (this.selectedReview._id === review._id) {
             this.selectedReview = this.emptyReview;
           }
-        }
-      })
-    );
+        });
+      }
+    });
   }
 
   changePageSize(size: string) {

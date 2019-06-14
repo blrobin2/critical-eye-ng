@@ -6,6 +6,7 @@
         [searchTerm$]="searchTerm$"
         [searchResults]="searchResults"
         [review]="selectedReview"
+        [open]="openReviewModalOnLoad"
         (handleReviewButton)="populateReviewForm($event)"
         (handleFormSave)="saveReview($event)">
       </app-review-form-modal>
