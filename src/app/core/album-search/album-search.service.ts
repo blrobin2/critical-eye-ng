@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { buildQueryString } from '../../utils';
 import { APP_CONFIG, AppConfig } from 'src/app/app-config.interface';
 
@@ -20,7 +20,7 @@ export class AlbumSearchService {
   baseUrl: string;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
     @Inject(APP_CONFIG) config: AppConfig
   ) {
    this.baseUrl = `${config.apiEndpoint}/api/search`;
@@ -36,8 +36,8 @@ export class AlbumSearchService {
   searchEntries(term: string) {
     return this.http.get(this.baseUrl + buildQueryString({ q: term }))
       .pipe(
-        map((response: { data: { items: any[] } }) => {
-          return response.data.items
+        map((response: { data: { items: any[] } }) =>
+          response.data.items
             // Grab only the data we care about
             .map(album => ({
               spotifyId: album.id,
@@ -48,8 +48,8 @@ export class AlbumSearchService {
               href: album.external_urls.spotify,
               artwork: album.images[0].url,
               yearReleased: new Date(album.release_date).getUTCFullYear(),
-            }));
-        })
+            }))
+          )
       );
   }
 }
