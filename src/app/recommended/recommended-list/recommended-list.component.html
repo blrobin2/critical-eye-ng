@@ -2,38 +2,10 @@
 <p>Finding new music can be tough. Using a secret recipe, we go out and find albums that are getting enough critical acclaim that we think they might be worth checking out. We can't guarantee they'll always be winners but if you're tired of listening to the same three albums you've been listening to since high school, you might appreciate the change in pace</p>
 <div *ngFor="let recChunk of recommended" class="row recommended-row">
   <div *ngFor="let result of recChunk" class="col-md-3">
-    <div class="card">
-      <img
-        *ngIf="result.artwork;else defaultAlbum"
-        class="card-img-top"
-        src="{{result.artwork}}"
-        alt="{{result.artist}} - {{result.album}} album cover"
-      />
-      <div class="card-body">
-        <h5 class="card-title">{{ result.album }}</h5>
-        <p class="card-text">
-          by {{ result.artist }}
-        </p>
-        <div class="btn-group">
-          <a
-            *ngIf="result.link"
-            class="btn btn-success"
-            target="_blank"
-            href="{{result.link}}">
-            Listen on Spotify
-          </a>
-          <button
-            class="btn btn-info"
-            (click)="reviewAlbum(result)">
-            Review
-          </button>
-          <span *ngIf="!result.link">Not available on Spotify</span>
-          <!-- <button class="btn btn-primary" (click)="handleReviewButton.emit(result)">
-            Review
-          </button> -->
-        </div>
-      </div>
-    </div>
+    <app-album-search-result
+    [result]="result"
+    (handleReviewButton)="reviewAlbum(result)">
+    </app-album-search-result>
   </div>
 </div>
 

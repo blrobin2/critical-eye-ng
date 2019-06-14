@@ -1,0 +1,29 @@
+<div class="card">
+  <img
+    *ngIf="result.artwork"
+    class="card-img-top"
+    src="{{result.artwork}}"
+    alt="{{result.artist}} - {{result.album}} album cover"
+  />
+  <div class="card-body">
+    <h5 class="card-title">{{ result.album }}</h5>
+    <p class="card-text">
+      by {{ result.artist }}
+    </p>
+    <div class="btn-group">
+      <a
+        *ngIf="result.href"
+        class="btn btn-success"
+        target="_blank"
+        href="{{result.href}}">
+        Listen
+      </a>
+      <span *ngIf="!result.href">Not available on Spotify</span>
+      <button
+        class="btn btn-primary"
+        (click)="handleReviewButton.emit(result)">
+        Review
+      </button>
+    </div>
+  </div>
+</div>

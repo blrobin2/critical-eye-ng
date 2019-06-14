@@ -7,6 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AlertComponent } from './alert/alert.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
+import { AlbumSearchResultComponent } from './album-search/album-search-result/album-search-result.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { RouterModule } from '@angular/router';
     SortableDirective,
     AlertComponent,
     AlbumSearchComponent,
-    NavbarComponent
+    NavbarComponent,
+    AlbumSearchResultComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ import { RouterModule } from '@angular/router';
     SortableDirective,
     AlertComponent,
     AlbumSearchComponent,
+    AlbumSearchResultComponent,
     NavbarComponent
   ]
 })

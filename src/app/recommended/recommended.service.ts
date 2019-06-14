@@ -5,6 +5,14 @@ import { Recommended } from './recommended';
 import { Observable } from 'rxjs';
 import { APP_CONFIG, AppConfig } from '../app-config.interface';
 
+interface RecommendedApi {
+  artist: string;
+  album: string;
+  date: string;
+  link?: string;
+  artwork?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +28,12 @@ export class RecommendedService {
 
   getRecommended(): Observable<Recommended[]> {
     return this.http.get(this.apiUrl).pipe(
-      map((response: { data: Recommended[] }) => response.data)
+      map((response: { data: RecommendedApi[] }) =>
+        response.data.map(rec => ({
+          ...rec,
+          href: rec.link
+        }))
+      )
     );
   }
 }
