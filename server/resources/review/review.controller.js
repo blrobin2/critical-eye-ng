@@ -1,8 +1,9 @@
 const { ObjectID } = require('../../utils/db');
+const { getCached, clearCache } = require('../../utils/cache');
 
 const getMany = (db, cache) => async (req, res) => {
   try {
-    const data = await getCachedMany(db, req.user._id, cache);
+    const data = await getCachedMany(db, cache, req.user._id);
     res.status(200).json({ data });
   } catch (e) {
     console.error(e)
@@ -12,32 +13,18 @@ const getMany = (db, cache) => async (req, res) => {
 
 const getManyCacheKey = userId => `${userId}-reviews`;
 
-const getCachedMany = (db, userId, cache) =>
-  new Promise((resolve, reject) => {
-    const key = getManyCacheKey(userId);
-    cache.get(key, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      if (result) {
-        return resolve(result);
-      }
-
-      db.collection('reviews').find({
+const getCachedMany = (db, cache, userId) =>
+  getCached(
+    cache,
+    getManyCacheKey(userId),
+    cb => db.collection('reviews').find({
         createdBy: new ObjectID(userId)
-      }).toArray((err, reviews) => {
-        if (err) {
-          return reject(err);
-        }
-        cache.set(key, reviews, { ttl: 6000 });
-        resolve(reviews);
-      });
-    });
-  });
+      }).toArray(cb),
+    6000);
 
 const getOne = (db, cache) => async (req, res) => {
     try {
-      const data = await getCachedOne(db, req.params.id, req.user._id, cache);
+      const data = await getCachedOne(db, cache, req.params.id, req.user._id);
       if (! data) {
         return res.status(404).end();
       }
@@ -48,46 +35,34 @@ const getOne = (db, cache) => async (req, res) => {
     }
 };
 
-const getCachedOne = (db, id, userId, cache) =>
-  new Promise((resolve, reject) => {
-    cache.get(id, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      if (result) {
-        return resolve(result);
-      }
-
-      db.collection('reviews').aggregate(
-        {
-          $match: {
-            _id: new ObjectID(id),
-            createdBy: new ObjectID(userId)
-          }
-        },
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'createdBy',
-            foreignField: '_id',
-            as: 'createdByUser'
-          }
-        }, {
-          $unwind: '$createdByUser'
-        }, {
-          $group: {
-            createdByUser: null
-          }
+const getCachedOne = (db, cache, id, userId) =>
+  getCached(
+    cache,
+    id,
+    cb => db.collection('reviews').aggregate(
+      {
+        $match: {
+          _id: new ObjectID(id),
+          createdBy: new ObjectID(userId)
         }
-      ).toArray((err, [review]) => {
-        if (err) {
-          return reject(err);
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'createdBy',
+          foreignField: '_id',
+          as: 'createdByUser'
         }
-        cache.set(id, review, { ttl: 10 });
-        resolve(review);
-      });
-    });
-  });
+      }, {
+        $unwind: '$createdByUser'
+      }, {
+        $group: {
+          createdByUser: null
+        }
+      }
+    ).toArray((err, [review]) => cb(err, review)),
+    10
+  );
 
 const createOne = (db, cache) => async (req, res) => {
   try {
@@ -171,15 +146,7 @@ const removeOne = (db, cache) => async (req, res) => {
 };
 
 const clearManyCache = (cache, userId) =>
-  new Promise((resolve, reject) => {
-    const key = getManyCacheKey(userId);
-    cache.del(key, (err, done) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(done);
-    });
-  });
+  clearCache(cache, getManyCacheKey(userId));
 
 module.exports = (db, cache) => ({
   getMany: getMany(db, cache),

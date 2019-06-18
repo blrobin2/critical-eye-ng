@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { getCached } = require('../../utils/cache');
 
 const router = (db, cache) => {
   const router = Router();
@@ -16,24 +17,11 @@ const router = (db, cache) => {
 };
 
 const getCachedRecommendations = (db, cache) =>
-  new Promise((resolve, reject) => {
-    cache.get('recommended', (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      if (result) {
-        return resolve(result);
-      }
-
-      db.collection('recommended').find({}).toArray((err, rec) => {
-        if (err) {
-          return reject(err);
-        }
-        cache.set('recommended', rec, { ttl: 43200 });
-        resolve(rec);
-      });
-    });
-  });
+  getCached(
+    cache,
+    'recommended',
+    cb => db.collection('recommended').find({}).toArray(cb),
+    43200);
 
 module.exports = {
   getRecommendedRouter: router

@@ -2,6 +2,7 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 
 const { ObjectID } = require('../../utils/db');
+const { getCached } = require('../../utils/cache');
 
 const newToken = (user, expiration) =>
   jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -55,11 +56,10 @@ const authenticate = (db, cache) => async (req, res, next) => {
     const { authorization } = req.headers;
     const [, token] = authorization.split('Bearer ');
 
-    // Ensure valid token
     const user = await verifyToken(token);
     if (!user) throw new Error();
 
-    const data = await getCachedUser(db, user.id, cache);
+    const data = await getCachedUser(db, cache, user.id);
     if (! data) throw new Error();
 
     req.user = data;
@@ -69,27 +69,13 @@ const authenticate = (db, cache) => async (req, res, next) => {
   }
 }
 
-const getCachedUser = (db, id, cache) =>
-  new Promise((resolve, reject) => {
-    cache.get(id, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      if (result) {
-        return resolve(result);
-      }
-
-      db.collection('users')
-        .findOne({
-          _id: new ObjectID(id)
-        })
-        .then(user => {
-          cache.set(id, user, { ttl: 6000 });
-          resolve(user);
-        })
-        .catch(reject);
-    });
-  });
+const getCachedUser = (db, cache, id) =>
+  getCached(cache,
+    id,
+    cb => db.collection('users').findOne({
+        _id: new ObjectID(id)
+      }, cb),
+    6000);
 
 module.exports = {
   getAuthRouter: router,
