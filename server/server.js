@@ -22,10 +22,7 @@ const app = express();
 
 app.disable('x-powered-by');
 app.use(helmet());
-app.use(cors({
-  origin: 'http://localhost:4200',
-  optionsSuccessStatus: 200
-}));
+app.use(cors());
 app.use(compression());
 app.use(json());
 app.use(urlencoded({ extended: true }));
@@ -56,7 +53,7 @@ const start = async () => {
     const client = await connect(
       process.env.MONGO_ADMIN,
       process.env.MONGO_PASSWORD,
-      process.env.MONGO_SERVER
+      process.env.MONGO_SERVER,
     );
     const spotifyApi = new SpotifyWebApi({
       clientId: process.env.SPOTIFY_CLIENT_ID,
