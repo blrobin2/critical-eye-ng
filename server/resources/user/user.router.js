@@ -12,7 +12,7 @@ const newToken = (user, expiration) =>
 const verifyToken = token =>
   new Promise((resolve, reject) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-      if (err) return reject(err);
+      if (err) { return reject(err); }
       resolve(payload);
     });
   });

@@ -1,16 +1,13 @@
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+const { MongoClient, ObjectID } = require('mongodb');
 
-const getUri = (admin, password) => `mongodb+srv://${admin}:${password}@cluster0-mv18n.mongodb.net/test?retryWrites=true&w=majority`;
+const getUri = (admin, password, server) => `mongodb+srv://${admin}:${password}@${server}`;
 
-
-const connect = async (admin, password) => {
-  const uri = getUri(admin, password);
+const connect = async (admin, password, server) => {
+  const uri = getUri(admin, password, server);
   return new MongoClient(uri, { useNewUrlParser: true }).connect();
 };
 
 module.exports = {
   connect,
-  ObjectID: require('mongodb').ObjectID
+  ObjectID
 };
-

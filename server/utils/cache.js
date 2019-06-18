@@ -2,7 +2,7 @@ const getCached = (cache, key, fn, ttl = 5) =>
   new Promise((resolve, reject) => {
     cache.get(key, (err, result) => {
       if (err) { return reject(err); }
-      if (result) {return resolve(result); }
+      if (result) { return resolve(result); }
 
       fn((err, val) => {
         if (err) { return reject(err); }

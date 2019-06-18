@@ -54,7 +54,9 @@ const start = async () => {
       ttl: 10
     });
     const client = await connect(
-      process.env.MONGO_ADMIN, process.env.MONGO_PASSWORD
+      process.env.MONGO_ADMIN,
+      process.env.MONGO_PASSWORD,
+      process.env.MONGO_SERVER
     );
     const spotifyApi = new SpotifyWebApi({
       clientId: process.env.SPOTIFY_CLIENT_ID,
