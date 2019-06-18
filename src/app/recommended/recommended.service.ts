@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Recommended } from './recommended';
 import { Observable } from 'rxjs';
-import { APP_CONFIG, AppConfig } from '../app-config.interface';
+import { map } from 'rxjs/operators';
+
+import { Recommended } from '@app/recommended/recommended';
+import { APP_CONFIG, AppConfig } from '@app/app-config.interface';
 
 interface RecommendedApi {
   artist: string;

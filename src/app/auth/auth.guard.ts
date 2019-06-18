@@ -5,7 +5,8 @@ import {
   Router,
   CanActivateChild,
 } from '@angular/router';
-import { AuthService } from './auth.service';
+
+import { AuthService } from '@app/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'

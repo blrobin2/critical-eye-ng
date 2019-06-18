@@ -22,7 +22,10 @@ const app = express();
 
 app.disable('x-powered-by');
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200
+}));
 app.use(compression());
 app.use(json());
 app.use(urlencoded({ extended: true }));

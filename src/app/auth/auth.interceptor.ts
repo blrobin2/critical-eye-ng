@@ -4,7 +4,8 @@ import {
   HttpHandler,
   HttpRequest
 } from '@angular/common/http';
-import { AuthService } from './auth.service';
+
+import { AuthService } from '@app/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'

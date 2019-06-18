@@ -1,13 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Review } from '../review';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { ReviewService } from '../review.service';
-import { SortEvent } from '../../core/sortable.directive';
-import { AlbumSearchService, AlbumSearchResult } from '../../core/album-search/album-search.service';
-import { AlertService } from '../../core/alert/alert.service';
-import { DialogService } from 'src/app/core/dialog.service';
-import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject, Subscription } from 'rxjs';
+
+import { Review } from '@app/reviews/review';
+import { ReviewService } from '@app/reviews/review.service';
+import { SortEvent } from '@app/core/sortable.directive';
+import {
+  AlbumSearchService,
+  AlbumSearchResult
+} from '@app/core/album-search/album-search.service';
+import { AlertService } from '@app/core/alert/alert.service';
+import { DialogService } from '@app/core/dialog.service';
 
 @Component({
   selector: 'app-reviews',

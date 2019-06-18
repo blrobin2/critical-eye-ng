@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   TemplateRef,
   Output,
@@ -8,11 +7,12 @@ import {
   OnChanges,
   ViewChild,
 } from '@angular/core';
-import { Review } from 'src/app/reviews/review';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { AlbumSearchResult } from 'src/app/core/album-search/album-search.service';
 import { Subject } from 'rxjs';
-import { DialogService } from 'src/app/core/dialog.service';
+
+import { Review } from '@app/reviews/review';
+import { AlbumSearchResult } from '@app/core/album-search/album-search.service';
+import { DialogService } from '@app/core/dialog.service';
 
 @Component({
   selector: 'app-review-form-modal',

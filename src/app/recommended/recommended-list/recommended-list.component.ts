@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Recommended } from '../recommended';
-import { RecommendedService } from '../recommended.service';
 import { Router, NavigationExtras } from '@angular/router';
+
+import { Recommended } from '@app/recommended/recommended';
+import { RecommendedService } from '@app/recommended/recommended.service';
 
 @Component({
   selector: 'app-recommended-list',

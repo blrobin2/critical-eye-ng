@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { ReviewsRoutingModule } from './reviews-routing.module';
-import { ReviewsComponent } from './reviews/reviews.component';
-import { ReviewsTableComponent } from './reviews-table/reviews-table.component';
-import { ReviewFormComponent } from './review-form/review-form.component';
-import { ReviewFormModalComponent } from './review-form-modal/review-form-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from '../auth/auth.interceptor';
+
+import { ReviewsRoutingModule } from '@app/reviews/reviews-routing.module';
+import { ReviewsComponent } from '@app/reviews/reviews/reviews.component';
+import { ReviewsTableComponent } from '@app/reviews/reviews-table/reviews-table.component';
+import { ReviewFormComponent } from '@app/reviews/review-form/review-form.component';
+import { ReviewFormModalComponent } from '@app/reviews/review-form-modal/review-form-modal.component';
+import { AuthInterceptor } from '@app/auth/auth.interceptor';
 import { ReviewDetailComponent } from './review-detail/review-detail.component';
 import { CoreModule } from '../core/core.module';
 

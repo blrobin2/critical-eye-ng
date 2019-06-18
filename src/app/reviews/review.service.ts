@@ -1,11 +1,11 @@
 import { Injectable, Inject } from '@angular/core';
-import { Review } from './review';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
 import { debounceTime, delay, switchMap, tap, map } from 'rxjs/operators';
 
-import { SortDirection } from '../core/sortable.directive';
-import { HttpClient } from '@angular/common/http';
-import { APP_CONFIG, AppConfig } from '../app-config.interface';
+import { Review } from '@app/reviews/review';
+import { SortDirection } from '@app/core/sortable.directive';
+import { APP_CONFIG, AppConfig } from '@app/app-config.interface';
 
 interface SearchResult {
   reviews: Review[];

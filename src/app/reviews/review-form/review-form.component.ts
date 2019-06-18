@@ -7,8 +7,9 @@ import {
   DoCheck
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Review } from '../review';
-import { AlertService } from 'src/app/core/alert/alert.service';
+
+import { Review } from '@app/reviews/review';
+import { AlertService } from '@app/core/alert/alert.service';
 
 @Component({
   selector: 'app-review-form',

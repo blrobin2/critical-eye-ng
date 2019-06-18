@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RecommendedListComponent } from './recommended-list/recommended-list.component';
+
+import { RecommendedListComponent } from '@app/recommended/recommended-list/recommended-list.component';
 
 const routes: Routes = [
   { path: '', component: RecommendedListComponent }

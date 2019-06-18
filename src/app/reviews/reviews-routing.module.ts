@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ReviewsComponent } from './reviews/reviews.component';
-import { AuthGuard } from '../auth/auth.guard';
-import { ReviewDetailComponent } from './review-detail/review-detail.component';
-import { ReviewDetailResolverService } from './review-detail-resolver.service';
+
+import { AuthGuard } from '@app/auth/auth.guard';
+import { ReviewsComponent } from '@app/reviews/reviews/reviews.component';
+import { ReviewDetailComponent } from '@app/reviews/review-detail/review-detail.component';
+import { ReviewDetailResolverService } from '@app/reviews/review-detail-resolver.service';
 
 const routes: Routes = [
   {

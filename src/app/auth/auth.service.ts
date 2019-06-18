@@ -1,8 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
-import { buildQueryString } from 'src/app/utils';
-import { AlertService } from '../core/alert/alert.service';
-import { APP_CONFIG, AppConfig } from '../app-config.interface';
+
+import { buildQueryString } from '@app/utils';
+import { AlertService } from '@app/core/alert/alert.service';
+import { APP_CONFIG, AppConfig } from '@app/app-config.interface';
 
 @Injectable({
   providedIn: 'root'

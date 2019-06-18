@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { AlbumSearchResult } from '../album-search.service';
+import { AlbumSearchResult } from '@app/core/album-search/album-search.service';
 
 @Component({
   selector: 'app-album-search-result',

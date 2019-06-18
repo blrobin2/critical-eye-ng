@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { Review } from './review';
-import { ReviewService } from './review.service';
 import { Observable, of, EMPTY } from 'rxjs';
 import { take, mergeMap } from 'rxjs/operators';
+
+import { Review } from '@app/reviews/review';
+import { ReviewService } from '@app/reviews/review.service';
 
 @Injectable({
   providedIn: 'root'
